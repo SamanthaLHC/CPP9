@@ -1,19 +1,20 @@
 NAME = btc
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -g3 -std=c++98
+CXXFLAGS = -MMD -Wall -Wextra -Werror -g3 -std=c++98
 
-SRC = ./BitcoinExchange.cpp main.cpp
+SRCS =  BitcoinExchange.cpp main.cpp
 
-OBJ = $(SRC:%.cpp=%.o)
+OBJS = $(SRCS:.cpp=.o)
+DEPS = $(OBJS:.o=.d)
 
 all: $(NAME)
 
-${NAME}: ${OBJ}
-	${CXX} ${CXXFLAGS} ${OBJ} -o ${NAME}
+${NAME}: ${OBJS}
+	${CXX} ${CXXFLAGS} ${OBJS} -o ${NAME}
 
 clean:
-	rm -rf ${OBJ}
+	rm -rf ${OBJS} ${DEPS}
 
 fclean: clean
 	rm -rf ${NAME}
@@ -27,4 +28,6 @@ grind: ${NAME}
 test: $(NAME)
 	./$(NAME) "123 pouet pouet"
 
-.PHONY: clean fclean re grind test
+.PHONY: all clean fclean re grind test
+
+-include ${DEPS}
