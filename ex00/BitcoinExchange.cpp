@@ -4,8 +4,6 @@
 //==================================================================================================
 //		constructors / destructors
 //==================================================================================================
-
-
 		
 		BitcoinExchange::BitcoinExchange(){}
 
@@ -19,6 +17,7 @@
 			{
 				std::cerr << e.what() << '\n';
 			}
+			// set_data_from_infile();
 		}
 
 		// BitcoinExchange::BitcoinExchange(BitcoinExchange const &cpy)
@@ -49,26 +48,58 @@
 			return "Error: bad date format. Date format must be: Year-Month-Day.";
 		}
 
-		const char *BitcoinExchange::BadValue::what() const throw()
+		const char *BitcoinExchange::NotPositiv::what() const throw()
 		{
-			return "Error: bad value. Value must be a positiv float or a positiv integer between 0 and 1000.";
+			return "Error: not a positive number.";
+		}
+
+		const char *BitcoinExchange::TooLargeNumber::what() const throw()
+		{
+			return "Error: too large number.";
 		}
 
 		const char *BitcoinExchange::WrongFile::what() const throw()
 		{
-			return "Error: bad date format.";
+			return "Error: could not open file.";
 		}
 		
 		const char *BitcoinExchange::BadPairFormatFile::what() const throw()
 		{
-			return "Error: bad file format. Each line must be a pair : date | value";
+			return "Error: bad input. =>";
 		}
 
 //==================================================================================================
 //		members functions
 //==================================================================================================
 
-		//void ? int? bool ??
+
+		bool BitcoinExchange::check_healthy_file(std::ifstream& input_file)
+		{
+			if(input_file.goodbit == true)
+				return true;
+		}
+
+		bool BitcoinExchange::check_file_format(std::ifstream& input_file)
+		{
+			// récupérer une ligne et vérifier une chaine avec 4digits un tiret
+			// 2 digits tiret 2digits un '|' un int 
+		}
+
+		bool BitcoinExchange::check_date(std::ifstream& input_file)
+		{
+
+		}
+
+		bool BitcoinExchange::check_pos_value(std::ifstream& input_file)
+		{
+
+		}
+
+		bool BitcoinExchange::check_limit_value(std::ifstream& input_file)
+		{
+
+		}
+
 		bool BitcoinExchange::check_file(std::ifstream& input_file)
 		{
 			if (!check_healthy_file(input_file))
@@ -77,8 +108,10 @@
 				throw BadPairFormatFile();
 			if (!check_date(input_file))
 				throw BadDateFormat();
-			if (!check_value(input_file))
-				throw BadValue();
+			if (!check_pos_value(input_file))
+				throw NotPositiv();
+			if (!check_limit_value(input_file))
+				throw TooLargeNumber();
 			else
 				return true;
 		}

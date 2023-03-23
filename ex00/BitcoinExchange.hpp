@@ -31,7 +31,12 @@ class BitcoinExchange
 			const char *what() const throw();
 		};
 
-		class BadValue: public std::exception
+		class NotPositiv: public std::exception
+		{
+			const char *what() const throw();
+		};
+
+		class TooLargeNumber: public std::exception
 		{
 			const char *what() const throw();
 		};
@@ -54,10 +59,22 @@ class BitcoinExchange
 		bool check_healthy_file(std::ifstream& input_file);
 		bool check_file_format(std::ifstream& input_file);
 		bool check_date(std::ifstream& input_file);
-		bool check_value(std::ifstream& input_file);
+		bool check_pos_value(std::ifstream& input_file);
+		bool check_limit_value(std::ifstream& input_file);
+
+		//getters/setters
+		
+		// void set_data_infile();
+		// void get_data_infile();
+
+
+		//finder/calculator
+
+
 
 //__________________________________attribute members
 
+		// std::vector<std::string> _data_from_infile;
 
 };
 
