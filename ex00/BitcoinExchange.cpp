@@ -4,114 +4,117 @@
 //==================================================================================================
 //		constructors / destructors
 //==================================================================================================
-		
-		BitcoinExchange::BitcoinExchange(){}
 
-		BitcoinExchange::BitcoinExchange(std::ifstream& input_file)
-		{
-			try
-			{
-				check_file(input_file);
-			}
-			catch(const std::exception& e)
-			{
-				std::cerr << e.what() << '\n';
-			}
-			// set_data_from_infile();
-		}
+BitcoinExchange::BitcoinExchange() {}
 
-		// BitcoinExchange::BitcoinExchange(BitcoinExchange const &cpy)
-		// {
+BitcoinExchange::BitcoinExchange(std::ifstream &input_file) : _error_message("")
+{
 
-		// }
+	if (input_file)
+	{
+		process_and_save_data(input_file);
+	}
+	else
+	{
+		std::cout << RED << "Error: could not open file." << RES << std::endl;
+		return;
+	}
+}
 
-		BitcoinExchange::~BitcoinExchange()
-		{
+// BitcoinExchange::BitcoinExchange(BitcoinExchange const &cpy)
+// {
 
-		}
+// }
+
+BitcoinExchange::~BitcoinExchange()
+{
+}
 
 //==================================================================================================
 //		operator overload
 //==================================================================================================
-		
-		// BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &rhs)
-		// {
 
-		// }
+// BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &rhs)
+// {
 
-//==================================================================================================
-//		exceptions handler
-//==================================================================================================
-
-		const char *BitcoinExchange::BadDateFormat::what() const throw()
-		{
-			return "Error: bad date format. Date format must be: Year-Month-Day.";
-		}
-
-		const char *BitcoinExchange::NotPositiv::what() const throw()
-		{
-			return "Error: not a positive number.";
-		}
-
-		const char *BitcoinExchange::TooLargeNumber::what() const throw()
-		{
-			return "Error: too large number.";
-		}
-
-		const char *BitcoinExchange::WrongFile::what() const throw()
-		{
-			return "Error: could not open file.";
-		}
-		
-		const char *BitcoinExchange::BadPairFormatFile::what() const throw()
-		{
-			return "Error: bad input. =>";
-		}
+// }
 
 //==================================================================================================
 //		members functions
 //==================================================================================================
 
+// getters/setters__________________________________________________________________________________
 
-		bool BitcoinExchange::check_healthy_file(std::ifstream& input_file)
+// parsing input file_______________________________________________________________________________
+
+bool BitcoinExchange::check_date_format(std::string const &date)
+{
+}
+
+// verif l'existence de la pair date-value
+bool BitcoinExchange::bad_input(std::string const &line)
+{
+	// appel de la fonction check_date_format();
+
+	// ici split_in_pair
+}
+
+bool BitcoinExchange::not_pos(std::string const& value) // cast en real type ?? float-int // recup avant avec std::pair??
+{
+}
+
+bool BitcoinExchange::too_large(std::string const& value)
+{
+
+}
+
+// return true si la ligne est complient false s'il y a un pb	
+bool BitcoinExchange::parsing()
+{
+	if (bad_input())
+	{
+		this->_error_message = "Error: bad input =>" += BitcoinExchange::get_curr_line();
+		// voir avec std::pair comment associer cette str avec le bad format (ex: 2001-42-42)
+		return false;
+	}
+	else
+	{
+		split_in_pair(_line);
+		if(check_date_format())
 		{
-			if(input_file.goodbit == true)
-				return true;
+			this->_error_message = 
 		}
-
-		bool BitcoinExchange::check_file_format(std::ifstream& input_file)
+		
+		if (not_pos())
 		{
-			// récupérer une ligne et vérifier une chaine avec 4digits un tiret
-			// 2 digits tiret 2digits un '|' un int 
+			std::cout << RED << "Error: not a positive number." << RES << std::endl;
+			return false;
 		}
-
-		bool BitcoinExchange::check_date(std::ifstream& input_file)
+		if (too_large())
 		{
-
+			{
+				this->_error_message = "Error: too large a number.";
+				return false;
+			}
 		}
+		return true;
+	}
+}
 
-		bool BitcoinExchange::check_pos_value(std::ifstream& input_file)
+// read file line by line in loop___________________________________________________________________
+
+void BitcoinExchange::process_and_save_data(std::ifstream &input_file)
+{
+	while (std::getline(input_file, _line))
+	{
+		if (parsing(_line))
 		{
-
+			//find_date();
+			//calculate();
+			//print_line(); //???
 		}
+		
+	}
+}
 
-		bool BitcoinExchange::check_limit_value(std::ifstream& input_file)
-		{
-
-		}
-
-		bool BitcoinExchange::check_file(std::ifstream& input_file)
-		{
-			if (!check_healthy_file(input_file))
-				throw WrongFile();
-			if (!check_file_format(input_file))
-				throw BadPairFormatFile();
-			if (!check_date(input_file))
-				throw BadDateFormat();
-			if (!check_pos_value(input_file))
-				throw NotPositiv();
-			if (!check_limit_value(input_file))
-				throw TooLargeNumber();
-			else
-				return true;
-		}
+// finder/calculator________________________________________________________________________________

@@ -1,7 +1,6 @@
 #ifndef BITCOINEXCHANGE
 #define BITCOINEXCHANGE
 
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -9,74 +8,45 @@
 
 class BitcoinExchange
 {
-	public:
+public:
+	BitcoinExchange(std::ifstream &input_file);
+	// BitcoinExchange(BitcoinExchange const &cpy);
+	~BitcoinExchange();
 
-		BitcoinExchange(std::ifstream &input_file);
-		// BitcoinExchange(BitcoinExchange const &cpy);
-		~BitcoinExchange();
+	// BitcoinExchange &operator=(BitcoinExchange const &rhs);
 
-		// BitcoinExchange &operator=(BitcoinExchange const &rhs);
+private:
+	//__________________________________useless constructor
 
+	BitcoinExchange();
 
+	//__________________________________members functions
 
-	private:
-//__________________________________useless constructor
-		
-		BitcoinExchange(); 
-		
-//__________________________________exceptions class
+	//parsing- error handlers
 
-		class BadDateFormat: public std::exception
-		{
-			const char *what() const throw();
-		};
-
-		class NotPositiv: public std::exception
-		{
-			const char *what() const throw();
-		};
-
-		class TooLargeNumber: public std::exception
-		{
-			const char *what() const throw();
-		};
-
-		class BadPairFormatFile: public std::exception
-		{
-			const char *what() const throw();
-		};
-
-		class WrongFile: public std::exception
-		{
-			const char *what() const throw();
-		};
-
-//__________________________________members functions
-
-		//parsing input file
-
-		bool check_file(std::ifstream& input_file);
-		bool check_healthy_file(std::ifstream& input_file);
-		bool check_file_format(std::ifstream& input_file);
-		bool check_date(std::ifstream& input_file);
-		bool check_pos_value(std::ifstream& input_file);
-		bool check_limit_value(std::ifstream& input_file);
-
-		//getters/setters
-		
-		// void set_data_infile();
-		// void get_data_infile();
+	bool parsing(std::string const& line);
+	bool check_date_format(std::string const &date);
+	bool bad_input(std::string const &line);
+	bool not_pos(std::string const &value);
+	bool too_large(std::string const &value);
 
 
-		//finder/calculator
+	// getters/setters
 
 
+	// read_line
 
-//__________________________________attribute members
+	void process_and_save_data(std::ifstream &input_file);
 
-		// std::vector<std::string> _data_from_infile;
+	// finder/calculator
 
+	//__________________________________attribute members
+
+	std::string					_line;
+	std::string					_date;
+	float						_value;
+	std::string					_error_message;
+	std::vector<std::string>	_data_csv;
 };
-
 
 #endif
