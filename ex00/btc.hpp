@@ -20,7 +20,7 @@
 //affichage_________________________________________________________________________________________
 
 #define ERROR(str) std::cerr << RED << str << RES << std::endl;
-#define DEBUG(str, var) std::cerr << GREEN << str << var << RES << std::endl;
-#define PRINT(str, var) std::cerr << WHITE << str << var << RES << std::endl;
+#define DEBUG(str, var) std::cout << GREEN << str << var << RES << std::endl;
+#define PRINT(str) std::cout << WHITE << str << std::endl;
 
 #endif

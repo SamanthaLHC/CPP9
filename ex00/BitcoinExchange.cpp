@@ -6,9 +6,10 @@
 
 BitcoinExchange::BitcoinExchange() {} // non utilisé, mis en private
 
-BitcoinExchange::BitcoinExchange(std::ifstream &input_file) : _line(""), _date(""), _value(0), _error_message("")
+BitcoinExchange::BitcoinExchange() : _line(""), _date(""), _value(0), _error_message("")
 {
-	
+	DEBUG("constructor called", "");
+	// this->exchange_calculator(input_file);
 }
 
 // BitcoinExchange::BitcoinExchange(BitcoinExchange const &cpy)
@@ -33,78 +34,82 @@ BitcoinExchange::~BitcoinExchange()
 //		members functions
 //==================================================================================================
 
-// getters/setters__________________________________________________________________________________
-
 // parsing input file_______________________________________________________________________________
 
-// bool BitcoinExchange::check_date_format(std::string const &date)
-// {
-// }
+void set_line(std::string const &line)
+{
+}
 
-// // verif l'existence de la pair date-value
-// bool BitcoinExchange::bad_input(std::string const &line)
-// {
-// 	// appel de la fonction check_date_format();
+std::string const &get_line()
+{
+}
+// parsing input file_______________________________________________________________________________
 
-// 	// ici split_in_pair
-// }
+bool BitcoinExchange::line_format_is_valid()
+{
+	DEBUG("Here, line_format_is valid :", _line);
+	return true;
+}
 
-// bool BitcoinExchange::not_pos(std::string const &value) // cast en real type ?? float-int // recup avant avec std::pair??
-// {
-// }
+bool BitcoinExchange::date_format_is_valid()
+{
+	DEBUG("Here, line_format_is valid :", _date);
+	return true;
+}
 
-// bool BitcoinExchange::too_large(std::string const &value)
-// {
-// }
+bool BitcoinExchange::value_is_valid()
+{
+	DEBUG("Here, line_format_is valid :", _value);
+	return true;
+}
 
-// // return true si la ligne est ok false s'il y a un pb
-// bool BitcoinExchange::parsing()
-// {
-// 	if (bad_input())
-// 	{
-// 		this->_error_message = "Error: bad input =>" += BitcoinExchange::get_curr_line();
-// 		// voir avec std::pair comment associer cette str avec le bad format (ex: 2001-42-42)
-// 		return false;
-// 	}
-// 	else
-// 	{
-// 		split_in_pair(_line);
-// 		if (check_date_format())
-// 		{
-// 			this->_error_message =
-// 		}
+void BitcoinExchange::split_and_get_val()
+{
+	DEBUG("Here, split and get values", "");
+}
 
-// 		if (not_pos())
-// 		{
-// 			std::cout << RED << "Error: not a positive number." << RES << std::endl;
-// 			return false;
-// 		}
-// 		if (too_large())
-// 		{
-// 			{
-// 				this->_error_message = "Error: too large a number.";
-// 				return false;
-// 			}
-// 		}
-// 		return true;
-// 	}
-// }
+// get datas and values_______________________________________________________________________________
+
+void BitcoinExchange::save_csv_data()
+{
+	DEBUG("Here, save csv datas", "");
+}
+
+// output result_______________________________________________________________________________
+
+void BitcoinExchange::find_date()
+{
+	DEBUG("Here, find date in map csv data", "");
+}
+
+void BitcoinExchange::calculate()
+{
+	DEBUG("Here, calculate and print", "");
+}
 
 // // read file line by line in loop___________________________________________________________________
 
-// void BitcoinExchange::process_and_save_data(std::ifstream &input_file)
+// void BitcoinExchange::exchange_calculator(std::ifstream *input_file)
 // {
-// 	while (std::getline(input_file, _line))
+// 	save_csv_data(); // save in map
+// 	while (!input_file->eof())
 // 	{
-// 		if (parsing(_line))
+// 		while (input_file->getline(_line, 1024, '\n'))
 // 		{
-// 			// find_date();
-// 			// calculate();
-// 			// print_line(); //???
+// 			DEBUG("line is: ", _line);
+// 			if (line_format_is_valid())
+// 			{
+// 				split_and_get_val();
+// 			}
+// 			else
+// 				PRINT(_error_message);
+// 			if (date_format_is_valid() && value_is_valid())
+// 			{
+// 				find_date();
+// 				calculate();
+// 			}
+// 			else
+// 				PRINT(_error_message);
 // 		}
-// 		else
-// 			ERROR(_error_message);
 // 	}
 // }
-
-// finder/calculator________________________________________________________________________________
