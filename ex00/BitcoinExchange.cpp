@@ -38,6 +38,16 @@ BitcoinExchange::~BitcoinExchange()
 bool BitcoinExchange::line_format_is_valid()
 {
 	INFO("Here, line_format_is valid :", _line);
+
+	for (size_t i = 0; i < _line.size(); i++)
+	{
+		if (_line.find("|") == std::string::npos)
+		{
+			this->_error_message = "Error: bad input => ";
+			this->_error_message += _line;
+			return false;
+		}
+	}
 	return true;
 }
 
@@ -56,6 +66,7 @@ bool BitcoinExchange::value_is_valid()
 void BitcoinExchange::split_and_get_val()
 {
 	INFO("Here, split and get values", "");
+	
 }
 
 // get datas and values_______________________________________________________________________________
