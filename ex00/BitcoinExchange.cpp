@@ -3,13 +3,11 @@
 //==================================================================================================
 //		constructors / destructors
 //==================================================================================================
-
 BitcoinExchange::BitcoinExchange() {} // non utilisé, mis en private
 
-BitcoinExchange::BitcoinExchange() : _line(""), _date(""), _value(0), _error_message("")
+BitcoinExchange::BitcoinExchange(std::ifstream & input_file) : _line(""), _date(""), _value(""), _error_message("")
 {
-	DEBUG("constructor called", "");
-	// this->exchange_calculator(input_file);
+	DEBUG("constructor called: ", &input_file);
 }
 
 // BitcoinExchange::BitcoinExchange(BitcoinExchange const &cpy)
@@ -36,12 +34,15 @@ BitcoinExchange::~BitcoinExchange()
 
 // parsing input file_______________________________________________________________________________
 
-void set_line(std::string const &line)
+void BitcoinExchange::set_line(std::string const &line)
 {
+	DEBUG("line is: ", line);
+	this->_line = line;
 }
 
-std::string const &get_line()
+std::string const & BitcoinExchange::get_line()
 {
+	return this->_line;
 }
 // parsing input file_______________________________________________________________________________
 
@@ -87,29 +88,29 @@ void BitcoinExchange::calculate()
 	DEBUG("Here, calculate and print", "");
 }
 
-// // read file line by line in loop___________________________________________________________________
+// read file line by line in loop___________________________________________________________________
 
-// void BitcoinExchange::exchange_calculator(std::ifstream *input_file)
-// {
-// 	save_csv_data(); // save in map
-// 	while (!input_file->eof())
-// 	{
-// 		while (input_file->getline(_line, 1024, '\n'))
-// 		{
-// 			DEBUG("line is: ", _line);
-// 			if (line_format_is_valid())
-// 			{
-// 				split_and_get_val();
-// 			}
-// 			else
-// 				PRINT(_error_message);
-// 			if (date_format_is_valid() && value_is_valid())
-// 			{
-// 				find_date();
-// 				calculate();
-// 			}
-// 			else
-// 				PRINT(_error_message);
-// 		}
-// 	}
-// }
+void BitcoinExchange::exchange_calculator(std::ifstream& input_file)
+{
+	save_csv_data(); // save in map
+	while (!input_file.eof())
+	{
+		while (std::getline())
+		{
+			DEBUG("line is: ", _line);
+			if (line_format_is_valid())
+			{
+				split_and_get_val();
+			}
+			else
+				PRINT(_error_message);
+			if (date_format_is_valid() && value_is_valid())
+			{
+				find_date();
+				calculate();
+			}
+			else
+				PRINT(_error_message);
+		}
+	}
+}

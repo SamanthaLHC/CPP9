@@ -11,23 +11,13 @@
 int main(int ac, char **av)
 {
 	if (ac != 2)
-		ERROR("USAGE: ./btc  <filename>")
+		ERROR("USAGE: ./btc  <filename>");
 	else
 	{
-		std::ifstream input_file(av[1]);
-		if (input_file)
-		{
-			while (!input_file.eof())
-			{
-				std::string line;
-				BitcoinExchange btc_exchange;
-				getline(input_file, line);
-				btc_exchange.set_line(line);
-			}
-		}
+		std::ifstream input_file(av[1], std::ifstream::in);
+		if (input_file.good())
+			BitcoinExchange btc_exchange(input_file);
 		else
-		{
 			ERROR("Error: no file available for i/o.");
-		}
 	}
 }

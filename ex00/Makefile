@@ -1,7 +1,7 @@
 NAME = btc
 
-# CXX = c++
-CXX = g++ #pour lldb remettre c++ 
+CXX = c++
+# CXX = g++ #pour lldb remettre c++ 
 CXXFLAGS = -MMD -Wall -Wextra -Werror -g3 -std=c++98
 
 SRCS =  BitcoinExchange.cpp main.cpp
@@ -24,7 +24,6 @@ re : fclean
 	make all
 
 grind: ${NAME}
-		grind: $(NAME)
 	valgrind -s --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all ./btc filename
 
 test: $(NAME)

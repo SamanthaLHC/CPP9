@@ -1,17 +1,12 @@
 #ifndef BITCOINEXCHANGE
 #define BITCOINEXCHANGE
 
-#include <iostream>
-#include <string>
-#include <map>
-#include <fstream>
-
 class BitcoinExchange
 {
 public:
 	// TODO //coplian form_____________________________________________________________
 
-	BitcoinExchange();
+	BitcoinExchange(std::ifstream & input_file);
 	// BitcoinExchange(BitcoinExchange const &cpy);
 	~BitcoinExchange();
 
@@ -25,6 +20,7 @@ public:
 
 private:
 	//__________________________________members functions
+	BitcoinExchange();
 
 	// parsing- error handlers
 
@@ -42,7 +38,7 @@ private:
 	void calculate();
 
 	// read file
-	void exchange_calculator(std::ifstream *file);
+	void exchange_calculator(std::ifstream& input_file);
 
 	//__________________________________attribute members
 

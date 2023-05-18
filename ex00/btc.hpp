@@ -1,7 +1,9 @@
 #ifndef BTC_HPP
 # define BTC_HPP
 
+#include <map>
 #include <string>
+#include <fstream>
 #include <iostream>
 #include "BitcoinExchange.hpp"
 
@@ -19,8 +21,8 @@
 
 //affichage_________________________________________________________________________________________
 
-#define ERROR(str) std::cerr << RED << str << RES << std::endl;
-#define DEBUG(str, var) std::cout << GREEN << str << var << RES << std::endl;
-#define PRINT(str) std::cout << WHITE << str << std::endl;
+#define ERROR(str) std::cerr << RED << str << RES << std::endl
+#define DEBUG(str, var) std::cout << GREEN << str << var << RES << std::endl
+#define PRINT(str) std::cout << WHITE << str << std::endl
 
 #endif
