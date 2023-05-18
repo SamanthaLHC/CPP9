@@ -5,7 +5,6 @@
 // construit un object type ifstream à partir d'un filename et l'ouvre avec le mode spécifié
 // filebuf::open est appelé, si open échoue failbit flag is set.
 // in: open pour la lecture (in par défaut pour ifstream, voir si je delete le deuxieme param)
-// si l'ouverture du fichier ecóue return un NULL ptr
 //__________________________________________________________________________________________________
 
 int main(int ac, char **av)
