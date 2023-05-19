@@ -48,6 +48,7 @@ bool BitcoinExchange::line_format_is_valid()
 			return false;
 		}
 	}
+	// TODO check la presence de space avant et apres pipe
 	return true;
 }
 
@@ -60,13 +61,22 @@ bool BitcoinExchange::date_format_is_valid()
 bool BitcoinExchange::value_is_valid()
 {
 	INFO("Here, value_is valid :", _value);
+	
 	return true;
 }
 
 void BitcoinExchange::split_and_get_val()
 {
 	INFO("Here, split and get values", "");
-	
+	size_t pos;
+	size_t i = 0;
+
+	pos = _line.find('|', i);
+	_date = _line.substr(i, (pos - i - 1));
+	DEBUG("date is: ", _date);
+	i = pos + 2; // saute le space
+	_value = _line.substr((i), ((_line.size())) - i);
+	DEBUG("value is: ", _value);
 }
 
 // get datas and values_______________________________________________________________________________
