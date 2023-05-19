@@ -10,13 +10,20 @@
 int main(int ac, char **av)
 {
 	if (ac != 2)
+	{
 		ERROR("USAGE: ./btc  <filename>");
+		return 1;
+	}
 	else
 	{
 		std::ifstream input_file(av[1], std::ifstream::in);
 		if (input_file.good())
 			BitcoinExchange btc_exchange(input_file);
 		else
+		{
 			ERROR("Error: no file available for i/o.");
+			return 1;
+		}
 	}
+	return 0;
 }
