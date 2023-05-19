@@ -149,7 +149,6 @@ bool BitcoinExchange::check_month()
 	}
 }
 
-// ONGOING
 bool BitcoinExchange::is_bissextile()
 {
 	int int_type = 0;
@@ -162,7 +161,7 @@ bool BitcoinExchange::is_bissextile()
 		return false;
 }
 
-// FIXME  NOT WORKING
+// FIXME  NOT WORKING dans le check affiné des dates
 bool BitcoinExchange::check_day(int month)
 {
 	int int_day = 0;
