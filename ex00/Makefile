@@ -1,34 +1,45 @@
 NAME = btc
 
 CXX = c++
-# CXX = g++ #pour lldb remettre c++ 
-CXXFLAGS = -MMD -Wall -Wextra -Werror -g3 -std=c++98
+CXXFLAGS = -MMD -g3 -Wall -Wextra -Werror -std=c++98
+INC = -I ./inc
 
-SRCS =  BitcoinExchange.cpp main.cpp
+SRC_PATH = sources/
+OBJ_PATH= objs/
 
-OBJS = $(SRCS:.cpp=.o)
-DEPS = $(OBJS:.o=.d)
+SRCS = ${addprefix ${SRC_PATH}, \
+		 main.cpp \
+		 BitcoinExchange.cpp}
 
-all: $(NAME)
+OBJS = ${SRCS:${SRC_PATH}%.cpp=${OBJ_PATH}%.o}
+DEPS = ${SRCS:${SRC_PATH}%.cpp=${OBJ_PATH}%.d}
 
-${NAME}: ${OBJS}
+
+${NAME}: ${OBJ_PATH} ${OBJS}
 	${CXX} ${CXXFLAGS} ${OBJS} -o ${NAME}
 
-clean:
-	rm -rf ${OBJS} ${DEPS}
+${OBJ_PATH}:
+	mkdir -p objs
 
+${OBJ_PATH}%.o: ${SRC_PATH}%.cpp
+	${CXX} ${CXXFLAGS} -c $< -o $@ ${INC}
+
+all: ${NAME}
+
+clean:
+	rm -rf ${OBJ_PATH}
+
+.PHONY: fclean
 fclean: clean
 	rm -rf ${NAME}
 
-re : fclean
+re: fclean
 	make all
 
 grind: ${NAME}
 	valgrind -s --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all ./btc filename
 
-test: $(NAME)
-	./$(NAME) "123 pouet pouet"
 
-.PHONY: all clean fclean re grind test
+.PHONY: all clean fclean re grind 
 
 -include ${DEPS}
