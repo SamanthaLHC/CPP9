@@ -4,12 +4,12 @@ int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		ERROR("USAGE: ./btc  <filename>");
+		ERROR("USAGE: ./btc  <numeric sequence>");
 		return 1;
 	}
 	else
 	{
-		RevPolishNot rpn();
+		RevPolishNot rpn(av[1]);
 
 	}
 	return 0;

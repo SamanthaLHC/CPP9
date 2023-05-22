@@ -5,10 +5,14 @@
 //==================================================================================================
 RevPolishNot::RevPolishNot() {} // non utilisé, mis en private
 
-RevPolishNot::RevPolishNot() :
+RevPolishNot::RevPolishNot(std::string const& arg) :
 {
+	
+	
+	//si ok calculer et output 
 }
 
+//TODO coplian form 
 RevPolishNot::RevPolishNot(RevPolishNot const &cpy) :
 {
 	*this = cpy;
