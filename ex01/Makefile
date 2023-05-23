@@ -38,20 +38,26 @@ re: fclean
 
 # grind: ${NAME}
 # 	valgrind -s --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all 
-test:
+test_expected_22:
 	./RPN "2 5 6 + *"
 
-test2:
+test_expected_42:
 	./RPN  "8 9 * 9 - 9 - 9 - 4 - 1 +"
 
-test3:
+test_expected_result_42:
 	./RPN   "7 7 * 7 -"
 
-test4:
+test_expected_0:
 	./RPN  "1 2 * 2 / 2 * 2 4 - +"
 
-test5:
+test_expected_error_infix:
 	 ./RPN "(1 + 1)"
+
+test_expected_error_no_operator:
+	 ./RPN "1  1"
+
+test_expected_error_first_elem_is_operator:
+	 ./RPN "- 1  1"
 
 .PHONY: all clean fclean re grind 
 

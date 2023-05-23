@@ -101,15 +101,23 @@ void RevPolishNot::process_sequence(std::string const &seq)
 					_sequence.push(_result);
 				}
 				else
+				{
+					PRINT("Error.");
 					return;
+				}
 			}
 
-			if (isdigit(token[0]))
+			else if (isdigit(token[0]))
 			{
 				std::istringstream str(token);
 				int number;
 				if (str >> number)
 					_sequence.push(number);
+			}
+			else
+			{
+				PRINT("Error.");
+				return;
 			}
 		}
 		else
@@ -119,5 +127,8 @@ void RevPolishNot::process_sequence(std::string const &seq)
 		}
 		i = pos + 1;
 	}
-	PRINT(_sequence.top());
+	if (_sequence.size() == 1)
+		PRINT(_sequence.top());
+	else
+		PRINT("Error.");
 }
