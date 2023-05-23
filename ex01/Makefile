@@ -36,9 +36,22 @@ fclean: clean
 re: fclean
 	make all
 
-grind: ${NAME}
-	valgrind -s --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all ./btc filename
+# grind: ${NAME}
+# 	valgrind -s --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all 
+test:
+	./RPN "2 5 6 + *"
 
+test2:
+	./RPN  "8 9 * 9 - 9 - 9 - 4 - 1 +"
+
+test3:
+	./RPN   "7 7 * 7 -"
+
+test4:
+	./RPN  "1 2 * 2 / 2 * 2 4 - +"
+
+test5:
+	 ./RPN "(1 + 1)"
 
 .PHONY: all clean fclean re grind 
 
