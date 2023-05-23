@@ -18,7 +18,6 @@ BitcoinExchange::BitcoinExchange(std::ifstream &input_file) : _line(""),
 															  _error_message("")
 {
 	save_csv_data();
-	// print_map();
 	exchange_calculator(input_file);
 }
 
@@ -133,9 +132,6 @@ void BitcoinExchange::split_date_in_tokens()
 		tmp_date.erase(tmp_date.begin(), tmp_date.begin() + (pos + 1));
 		count_step += 1;
 	}
-	// INFO("YEAR: ", _year);
-	// INFO("MONTH: ", _month);
-	// INFO("DAY: ", _day);
 }
 
 bool BitcoinExchange::check_year()
@@ -317,11 +313,9 @@ void BitcoinExchange::split_and_get_val()
 
 	pos = _line.find('|', i);
 	_date = _line.substr(i, (pos - i - 1));
-	// INFO("date is: ", _date);
 
 	i = pos + 2; // saute le space
 	_value = _line.substr((i), ((_line.size())) - i);
-	// INFO("value is: ", _value);
 }
 
 // get datas and values_______________________________________________________________________________
@@ -335,16 +329,13 @@ void BitcoinExchange::split_in_pair(std::string const &entry_line)
 
 	pos = entry_line.find(',', i);
 	key = entry_line.substr(i, (pos - i));
-	// INFO("key date is: ", key);
 
 	i = pos + 1;
 	val = entry_line.substr((i), ((entry_line.size())) - i);
-	// INFO("value is: ", val);
 
 	std::istringstream val_to_conv(val);
 	float float_type;
 	val_to_conv >> float_type;
-	// INFO("value after conversion is: ", float_type);
 
 	this->_data_csv[key] = float_type; // ds map: si a la pos [] il n'y a rien, la pair key val est inseree
 }
@@ -380,13 +371,6 @@ void BitcoinExchange::find_date()
 	{
 		it = _data_csv.lower_bound(_date);
 		it--;
-
-		// DEBUG_______________________________________________________________
-		//  if (it != _data_csv.end())
-		//  	std::cout << CYAN << "lower key is: " << it->first << RES << std::endl;
-		//  else
-		//  DEBUG("key not found", "");
-		// FIN DU DEBUG_______________________________________________________
 	}
 	if (it != _data_csv.end())
 	{
@@ -402,7 +386,6 @@ void BitcoinExchange::exchange_calculator(std::ifstream &input_file)
 	{
 		reset_tokens();
 		std::getline(input_file, _line);
-		// INFO(_line, "");
 
 		if (line_format_is_valid())
 			split_and_get_val();
