@@ -59,22 +59,18 @@ void RevPolishNot::do_calcul()
 	{
 	case '*':
 		_result = _term_a * _term_b;
-		DEBUG("result of the operation is: ", _result);
 		break;
 
-	case '/': // TODO // void s'il faut faire une condition pour diviser le plus grand par le plus petit
+	case '/':
 		_result = _term_a / _term_b;
-		DEBUG("result of the operation is: ", _result);
 		break;
 
 	case '-': // idem
 		_result = _term_a - _term_b;
-		DEBUG("result of the operation is: ", _result);
 		break;
 
 	case '+':
 		_result = _term_a + _term_b;
-		DEBUG("result of the operation is: ", _result);
 		break;
 	}
 }
@@ -89,25 +85,18 @@ void RevPolishNot::process_sequence(std::string const &seq)
 	{
 		pos = seq.find(' ', i);
 		std::string token = seq.substr(i, (pos - i));
-		DEBUG("token is : ", token);
 
 		if (token.size() == 1)
 		{
 			if (isoperator(token[0]))
 			{
 				_operator = token[0];
-				INFO("operator is : ", _operator);
 				if (_sequence.size() >= 2)
 				{
 					_term_b = _sequence.top();
-					DEBUG("_term_a is: ", _term_b);
 					_sequence.pop();
 					_term_a = _sequence.top();
 					_sequence.pop();
-					DEBUG("_term_b is: ", _term_a);
-
-					if(!_sequence.empty())
-						INFO("term remaining in stack: ", _sequence.top());
 					do_calcul();
 					_sequence.push(_result);
 				}
@@ -117,15 +106,10 @@ void RevPolishNot::process_sequence(std::string const &seq)
 
 			if (isdigit(token[0]))
 			{
-				DEBUG("elem is digit: ", token[0]);
-
 				std::istringstream str(token);
 				int number;
 				if (str >> number)
-				{
 					_sequence.push(number);
-					INFO("elem in stack: ", _sequence.top());
-				}
 			}
 		}
 		else
