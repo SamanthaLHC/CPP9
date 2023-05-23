@@ -99,12 +99,12 @@ void RevPolishNot::process_sequence(std::string const &seq)
 				INFO("operator is : ", _operator);
 				if (_sequence.size() >= 2)
 				{
-					_term_a = _sequence.top();
-					DEBUG("_term_a is: ", _term_a);
-					_sequence.pop();
 					_term_b = _sequence.top();
+					DEBUG("_term_a is: ", _term_b);
 					_sequence.pop();
-					DEBUG("_term_b is: ", _term_b);
+					_term_a = _sequence.top();
+					_sequence.pop();
+					DEBUG("_term_b is: ", _term_a);
 
 					if(!_sequence.empty())
 						INFO("term remaining in stack: ", _sequence.top());
