@@ -5,14 +5,18 @@
 //==================================================================================================
 RevPolishNot::RevPolishNot() {} // non utilisé, mis en private
 
-RevPolishNot::RevPolishNot(std::string const &arg)
+RevPolishNot::RevPolishNot(std::string const &arg) : _operator(' '),
+													 _term_a(0),
+													 _term_b(0),
+													 _result(0)
 {
-	split_in_tokens(arg);
-	calculate_and_print_result();
+	process_sequence(arg);
 }
 
-// TODO coplian form
-RevPolishNot::RevPolishNot(RevPolishNot const &cpy)
+RevPolishNot::RevPolishNot(RevPolishNot const &cpy) : _operator(cpy._operator),
+													  _term_a(cpy._term_a),
+													  _term_b(cpy._term_b),
+													  _result(cpy._result)
 {
 	*this = cpy;
 }
@@ -29,6 +33,10 @@ RevPolishNot &RevPolishNot::operator=(RevPolishNot const &rhs)
 {
 	if (this != &rhs)
 	{
+		_operator = rhs._operator;
+		_term_a = rhs._term_a;
+		_term_b = rhs._term_b;
+		_result = rhs._result;
 	}
 	return *this;
 }
@@ -36,35 +44,6 @@ RevPolishNot &RevPolishNot::operator=(RevPolishNot const &rhs)
 //==================================================================================================
 //		members functions
 //==================================================================================================
-
-// utils
-void RevPolishNot::print_sequence()
-{
-	for (size_t i = 0; i < _sequence.size(); i++)
-	{
-		std::cout << CYAN << "deque content: " << _sequence.top() << RES << std::endl;
-	}
-}
-
-// parsing- error handlers
-void RevPolishNot::split_in_tokens(std::string const &seq)
-{
-	size_t pos = 0;
-	size_t i = 0;
-
-	pos = seq.find(' ', i);
-	std::string token = seq.substr(i, (pos - i));
-	_sequence.push_back(seq.substr(i, (pos - i)));
-	while (pos != std::string::npos)
-	{
-		i = pos + 1;
-		pos = seq.find(' ', i);
-		_sequence.push_back(seq.substr(i, (pos - i)));
-		//TODO trim les espaces
-	}
-	// DEBUG
-	// print_sequence();
-}
 
 bool RevPolishNot::isoperator(char c)
 {
@@ -74,50 +53,87 @@ bool RevPolishNot::isoperator(char c)
 		return false;
 }
 
-bool RevPolishNot::last_elem_is_operator()
+void RevPolishNot::do_calcul()
 {
-	if (_sequence.back().size() == 1)
+	switch (_operator)
 	{
-		if (isoperator(_sequence.back()[0]))
-			return true;
-		else
-			return false;
-	}
-	else
-		return false;
-}
+	case '*':
+		_result = _term_a * _term_b;
+		DEBUG("result of the operation is: ", _result);
+		break;
 
-bool RevPolishNot::sequence_is_valid()
-{
-	size_t i = 0;
+	case '/': // TODO // void s'il faut faire une condition pour diviser le plus grand par le plus petit
+		_result = _term_a / _term_b;
+		DEBUG("result of the operation is: ", _result);
+		break;
 
-	for (; i < _sequence.size(); i++)
-	{
-		if (_sequence[i].size() == 1)
-		{
-			char c = _sequence[i][0];
-			if (!(isdigit(c) || isoperator(c)))
-				return false;
-		}
-		else
-			return false;
+	case '-': // idem
+		_result = _term_a - _term_b;
+		DEBUG("result of the operation is: ", _result);
+		break;
+
+	case '+':
+		_result = _term_a + _term_b;
+		DEBUG("result of the operation is: ", _result);
+		break;
 	}
-	return true;
 }
 
 // main loop
-void RevPolishNot::calculate_and_print_result()
+void RevPolishNot::process_sequence(std::string const &seq)
 {
-	if (sequence_is_valid() && last_elem_is_operator())
-	{
-		INFO("sequence valid ok", "");
-		// convertir les int pour calculer
-		//  boucle de calcul => tant que deque chercher operand si operand prendre les nb presents avant etc.
-		//   mettre le result au debut de la sequence pour recalucler avec l'operand suivant
-	}
-	else
-		PRINT("Error.");
-}
+	int i = 0;
+	size_t pos = 0;
 
-//TODO gérer les priorité de calcul (deux operands se succedent)
-// exemple: 2 5 6 + * == 2 * (5 + 6)
+	while (pos != std::string::npos)
+	{
+		pos = seq.find(' ', i);
+		std::string token = seq.substr(i, (pos - i));
+		DEBUG("token is : ", token);
+
+		if (token.size() == 1)
+		{
+			if (isoperator(token[0]))
+			{
+				_operator = token[0];
+				INFO("operator is : ", _operator);
+				if (_sequence.size() >= 2)
+				{
+					_term_a = _sequence.top();
+					DEBUG("_term_a is: ", _term_a);
+					_sequence.pop();
+					_term_b = _sequence.top();
+					_sequence.pop();
+					DEBUG("_term_b is: ", _term_b);
+
+					if(!_sequence.empty())
+						INFO("term remaining in stack: ", _sequence.top());
+					do_calcul();
+					_sequence.push(_result);
+				}
+				else
+					return;
+			}
+
+			if (isdigit(token[0]))
+			{
+				DEBUG("elem is digit: ", token[0]);
+
+				std::istringstream str(token);
+				int number;
+				if (str >> number)
+				{
+					_sequence.push(number);
+					INFO("elem in stack: ", _sequence.top());
+				}
+			}
+		}
+		else
+		{
+			PRINT("Error.");
+			return;
+		}
+		i = pos + 1;
+	}
+	PRINT(_sequence.top());
+}

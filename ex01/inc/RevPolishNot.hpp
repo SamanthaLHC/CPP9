@@ -21,16 +21,20 @@ private:
 	void print_sequence();
 
 	// parsing- error handlers
-	void split_in_tokens(std::string const &sequence);
 	bool isoperator(char c);
-	bool last_elem_is_operator();
-	bool sequence_is_valid();
+	// bool last_elem_is_operator();
 
 	// calculs et print
-	void calculate_and_print_result();
+	void do_calcul();
+	void process_sequence(std::string const& sequence);
 
 	//__________________________________attribute members
-	std::deque<std::string> _sequence;
+
+	char _operator;
+	int _term_a;
+	int _term_b;
+	int _result;
+	std::stack<int> _sequence;
 };
 
 #endif
