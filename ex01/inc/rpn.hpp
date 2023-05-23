@@ -1,7 +1,7 @@
 #ifndef RPN_HPP
 # define RPN_HPP
 
-#include <deque>
+#include <stack>
 #include <string>
 #include <fstream>
 #include <sstream>

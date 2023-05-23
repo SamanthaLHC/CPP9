@@ -8,9 +8,6 @@ int main(int ac, char **av)
 		return 1;
 	}
 	else
-	{
 		RevPolishNot rpn(av[1]);
-
-	}
 	return 0;
 }
