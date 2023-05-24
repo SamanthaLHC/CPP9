@@ -5,10 +5,11 @@
 //==================================================================================================
 PmergeMe::PmergeMe() {} // non utilisé, mis en private
 
-PmergeMe::PmergeMe(std::string const &arg)
-
+PmergeMe::PmergeMe(std::deque<int> int_array, std::list<int> int_list, int ac) : _count_elem(ac)
 {
-	process_sequence(arg);
+	(void)int_array;
+	(void)int_list;
+	(void)ac;
 }
 
 PmergeMe::PmergeMe(PmergeMe const &cpy)
@@ -28,7 +29,6 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &rhs)
 {
 	if (this != &rhs)
 	{
-
 	}
 	return *this;
 }
@@ -36,3 +36,6 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &rhs)
 //==================================================================================================
 //		members functions
 //==================================================================================================
+// parsing and check
+
+

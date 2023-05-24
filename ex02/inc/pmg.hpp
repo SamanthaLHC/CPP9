@@ -1,7 +1,8 @@
 #ifndef PMG_HPP
 # define PMG_HPP
 
-#include <stack>
+#include <list>
+#include <deque>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -25,6 +26,6 @@
 #define ERROR(str) std::cerr << RED << str << RES << std::endl
 #define DEBUG(str, var) std::cout << GREEN << str << var << RES << std::endl
 #define INFO(str, var) std::cout << MAGENTA << str << var << RES << std::endl
-#define PRINT(str) std::cout << WHITE << str << std::endl
+#define PRINT(str, var) std::cout << WHITE << str << var << std::endl
 
 #endif
