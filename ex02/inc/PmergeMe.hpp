@@ -6,7 +6,7 @@ class PmergeMe
 public:
 	// coplian form_____________________________________________________________
 
-	PmergeMe(std::deque<int> int_array, std::list<int> int_list, int ac);
+	PmergeMe(std::deque<int> int_deque, std::list<int> int_list, int ac);
 	PmergeMe(PmergeMe const &cpy);
 	~PmergeMe();
 
@@ -18,18 +18,21 @@ private:
 	PmergeMe();
 
 	// utils
-	
-	//parsing and check
-
+	void print_sequence();
+	void print_sequence_list();
 
 	// sort algo
+	void sort_in_deque(std::deque<int> const& deque);
+	void sort_in_list(std::list<int> const& list);
 
 	//measure time
 
 
 	//__________________________________attribute members
 
-	int _count_elem;
+	std::deque<int>	_int_deque;
+	std::list<int>	_int_list;
+	int 			_count_elem;
 
 
 };
