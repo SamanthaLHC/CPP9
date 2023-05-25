@@ -12,8 +12,8 @@ PmergeMe::PmergeMe(std::deque<int> int_array, std::list<int> int_list, int ac) :
 	std::cout << WHITE << "Before: ";
 	print_sequence();
 
-	sort_in_deque(int_array);
-	sort_in_list(int_list);
+	sort_in_deque();
+	sort_in_list();
 }
 
 PmergeMe::PmergeMe(PmergeMe const &cpy) : _int_deque(cpy._int_deque),
@@ -69,6 +69,14 @@ void PmergeMe::print_sequence_list()
 }
 
 //sort
+void sort_in_deque()
+{
 
+}
+
+void sort_in_list()
+{
+
+}
 
 //measure time

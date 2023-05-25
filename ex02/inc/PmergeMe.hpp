@@ -22,8 +22,8 @@ private:
 	void print_sequence_list();
 
 	// sort algo
-	void sort_in_deque(std::deque<int> const& deque);
-	void sort_in_list(std::list<int> const& list);
+	void sort_in_deque();
+	void sort_in_list();
 
 	//measure time
 

@@ -4,7 +4,7 @@ int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		ERROR("USAGE: ./btc  <numeric sequence>");
+		ERROR("USAGE: ./RPN  <numeric sequence>");
 		return 1;
 	}
 	else

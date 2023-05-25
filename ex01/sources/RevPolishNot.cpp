@@ -78,7 +78,7 @@ void RevPolishNot::do_calcul()
 // main loop
 void RevPolishNot::process_sequence(std::string const &seq)
 {
-	int i = 0;
+	size_t i = 0;
 	size_t pos = 0;
 
 	while (pos != std::string::npos)
