@@ -30,9 +30,10 @@ private:
 
 	//__________________________________attribute members
 
-	std::deque<int>	_int_deque;
-	std::list<int>	_int_list;
-	int 			_count_elem;
+	std::deque<int>									_int_deque;
+	std::list<int>									_int_list;
+	int 											_count_elem;
+	std::deque<std::deque<std::pair<int, int> > >	_deque_pairs;
 
 
 };

@@ -71,7 +71,7 @@ void PmergeMe::print_sequence_list()
 //sort
 void sort_in_deque()
 {
-	// if ac == odd , un elem non trié
+	
 	// make pairs
 	// inside pairs sort 
 	// sort pairs looking right element
