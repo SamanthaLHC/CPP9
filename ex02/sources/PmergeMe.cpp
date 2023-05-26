@@ -68,19 +68,21 @@ void PmergeMe::print_sequence_list()
 	std::cout << std::endl;
 }
 
-//sort
-void sort_in_deque()
+// sort
+void PmergeMe::sort_in_deque()
 {
-	
+
 	// make pairs
-	// inside pairs sort 
+	for (size_t i = 0; i < _int_deque.size(); i++)
+	{
+		std::pair<int, int> cell;
+		cell.first
+	}
+	// inside pairs sort
 	// sort pairs looking right element
-	// 
+	//
 }
 
-void sort_in_list()
+void PmergeMe::sort_in_list()
 {
-
 }
-
-//measure time
