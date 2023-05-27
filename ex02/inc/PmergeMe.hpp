@@ -24,6 +24,9 @@ private:
 
 	// sort algo
 	void sort_in_deque();
+	void make_pairs_in_deque();
+	void merge_sort();
+	void merge();
 	void sort_in_list();
 
 	//measure time

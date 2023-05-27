@@ -82,17 +82,9 @@ void PmergeMe::print_pairs()
 }
 
 // sort
-void PmergeMe::sort_in_deque()
-{
 
-	// make pairs
-	DEBUG("last elem in deque ", _int_deque.back());
-	DEBUG("count elem: ", _count_elem);
-	if (_count_elem % 2 == 0)
-		PRINT("elem count is not odd", "");
-	else
-		PRINT("elems odd", "");
-	
+void PmergeMe::make_pairs_in_deque()
+{
 	if (!(_count_elem % 2 == 0))
 	{
 		_last_int = _int_deque.back();
@@ -105,10 +97,30 @@ void PmergeMe::sort_in_deque()
 		_int_deque.pop_front();
 		cell.second = _int_deque.front();
 		_int_deque.pop_front();
+
+		if (cell.first > cell.second)
+			std::swap(cell.first, cell.second);
 		_deque_pairs.push_back(cell);
 	}
+}
+
+void PmergeMe::merge_sort()
+{
+	//declarer left
+	//declarer right
+	//declarer une nouvelle deque sorting_deque ??????
+	//calculer mid
+	merge_sort()
+}
+
+void PmergeMe::sort_in_deque()
+{
+
+	// make pairs
+
+	make_pairs_in_deque();
 	print_pairs();
-	DEBUG("last elem saved if odd ", _last_int);
+	merge_sort();
 	// inside pairs sort
 	// sort pairs looking right element
 	//
