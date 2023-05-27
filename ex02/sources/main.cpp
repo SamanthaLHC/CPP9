@@ -18,7 +18,6 @@ int main(int ac, char **av)
 			std::istringstream str_to_conv(av[i]);
 			int elem_to_check;
 
-			DEBUG("elem to check is: ", av[i]);
 			if ((str_to_conv >> elem_to_check && str_to_conv.rdbuf()->in_avail() == 0) && (elem_to_check >= 0))
 			{
 				int_deque.push_back(elem_to_check);
@@ -31,7 +30,7 @@ int main(int ac, char **av)
 			}
 			i++;
 		}
-		PmergeMe pmg(int_deque, int_list, ac);
+		PmergeMe pmg(int_deque, int_list, ac - 1);
 	}
 	return 0;
 }

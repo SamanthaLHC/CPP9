@@ -19,6 +19,7 @@ private:
 
 	// utils
 	void print_sequence();
+	void print_pairs();
 	void print_sequence_list();
 
 	// sort algo
@@ -30,10 +31,11 @@ private:
 
 	//__________________________________attribute members
 
+	int												_last_int;
 	std::deque<int>									_int_deque;
 	std::list<int>									_int_list;
 	int 											_count_elem;
-	std::deque<std::deque<std::pair<int, int> > >	_deque_pairs;
+	std::deque<std::pair<int, int> >				_deque_pairs;
 
 
 };
