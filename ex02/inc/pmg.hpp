@@ -1,7 +1,7 @@
 #ifndef PMG_HPP
 # define PMG_HPP
 
-#include <list>
+#include <vector>
 #include <deque>
 #include <string>
 #include <utility>
