@@ -25,6 +25,7 @@ private:
 	// utils
 	void print_sequence(std::vector<int> int_vector);
 	void print_result();
+	void print_time();
 
 	// void print_sequence(std::deque<int> int_deque);
 

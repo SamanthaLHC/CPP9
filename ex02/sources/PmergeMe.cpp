@@ -3,11 +3,11 @@
 //==================================================================================================
 //		constructors / destructors
 //==================================================================================================
-PmergeMe::PmergeMe():	_count_elem(0),
-						_vec_time(0),
-						_deque_time(0),
-						_begin_vec(0),
-						_begin_deq(0)
+PmergeMe::PmergeMe() : _count_elem(0),
+					   _vec_time(0),
+					   _deque_time(0),
+					   _begin_vec(0),
+					   _begin_deq(0)
 {
 }
 
@@ -15,6 +15,7 @@ PmergeMe::PmergeMe(std::deque<int> _int_deque, std::vector<int> _int_vector, int
 																					   _int_deque(_int_deque),
 																					   _int_vector(_int_vector)
 {
+	std::cout << WHITE << "Before:	";
 	print_sequence(_int_vector);
 	launch();
 }
@@ -73,13 +74,19 @@ void PmergeMe::print_sequence(std::vector<int> _int_vector)
 	std::cout << RES << std::endl;
 }
 
-	
 void PmergeMe::print_result()
 {
-
+	std::cout << WHITE << "After:	";
+	print_sequence(_int_vector);
 }
 
-//measure time
+void PmergeMe::print_time()
+{
+	std::cout << WHITE << "Time to process a range of: " << _count_elem
+			  << " elements with std::vector : " << _vec_time << " us" << RES << std::endl;
+}
+
+// measure time
 
 void PmergeMe::set_time_begin_vec(clock_t time)
 {
@@ -91,13 +98,12 @@ clock_t PmergeMe::get_time_begin_vec()
 	return _begin_vec;
 }
 
-double  PmergeMe::get_vec_time()
+double PmergeMe::get_vec_time()
 {
 	return _vec_time;
 }
 
-
-//sort
+// sort
 void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int end)
 {
 	int size_first_half = mid - end + 1;
@@ -160,16 +166,15 @@ void PmergeMe::sort(std::vector<int> &vector_arr, int start, int end)
 		insert_sort(vector_arr, start, end);
 
 	clock_t end_time = clock();
-	_vec_time = (end_time - _begin_vec)  / double(CLOCKS_PER_SEC);
+	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
 }
 
 void PmergeMe::launch()
 {
 	sort(_int_vector, 0, _int_vector.size() - 1);
 	print_result();
-	
+	print_time();
 }
 
-
-//TODO is sorted if oui affichage if no error
-//TODO affichage complient
+// TODO is sorted if oui affichage if no error
+//FIXME not completely sorted
