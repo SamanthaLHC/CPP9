@@ -23,12 +23,10 @@ private:
 	void print_sequence(std::deque<int> int_deque);
 
 		// sort algo
-	void make_pairs();
-	void merge_sort(std::vector<int> &vector, int start, int end);
+	void launch();
+	void sort(std::vector<int> &vector, int start, int end);
+	void merge_sort(std::vector<int> &vector, int start, int mid, int end);
 	void insert_sort(std::vector<int> &vector, int start, int end);
-	void insert_sort(std::vector<int> &vector, int start, int end);
-	void merge(std::vector<int> &vector, int start, int mid, int end);
-	void sort(std::vector<int> int_vector);
 
 	// measure time
 
