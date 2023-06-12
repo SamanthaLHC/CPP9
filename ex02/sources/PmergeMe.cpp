@@ -11,7 +11,7 @@ PmergeMe::PmergeMe(std::deque<int> _int_deque, std::vector<int> _int_vector, int
 																					   _int_vector(_int_vector)
 {
 
-	sort(_int_deque);
+	// sort(_int_deque);
 	sort(_int_vector);
 }
 
@@ -94,13 +94,22 @@ void PmergeMe::print_sequence(std::vector<std::pair<int, int> >)
 	std::cout << std::endl;
 }
 
+// void PmergeMe::print_pairs()
+// {
+// 	int i = 0;
+// 	for (; i < _deque_pairs.size(); i++)
+// 	{
+// 		std::cout << CYAN << "[ " << _deque_pairs[i].first << " "
+// 				  << _deque_pairs[i].second << " ]" << RES << std::endl;
+// 	}
+// }
+
 void PmergeMe::print_pairs()
 {
-	int i = 0;
-	for (; i < _deque_pairs.size(); i++)
+	for (size_t i = 0; i < _vector_pairs.size(); i++)
 	{
-		std::cout << CYAN << "[ " << _deque_pairs[i].first << " "
-				  << _deque_pairs[i].second << " ]" << RES << std::endl;
+		std::cout << CYAN << "[ " << _vector_pairs[i].first << " "
+				  << _vector_pairs[i].second << " ]" << RES << std::endl;
 	}
 }
 
@@ -127,35 +136,48 @@ void PmergeMe::make_pairs()
 	}
 }
 
-void PmergeMe::merge(std::vector<std::pair<int, int> > _vector_pairs, int start, int mid, int end)
+void PmergeMe::merge(std::vector<std::pair<int, int> > &vector, int start, int mid, int end)
 {
-	std::vector<std::vector<int> > first_half;
-	std::vector<std::vector<int> > second_half;
+	int size_first_half = mid - start + 1;
+	int size_second_half = end - mid;
+
+	std::vector<std::pair<int, int> > first_half;
+	std::vector<std::pair<int, int> > second_half;
+
+	for (int i = 0; i < size_first_half; i++)
+		first_half[i] = vector[start + i];
+	for (int j = 0; j < size_second_half; j++)
+		second_half[j] = vector[mid + 1 + j];
+	
+	DEBUG("fill two sub arrays", "");
+	print_sequence(first_half);
+	print_sequence(second_half);
+
 
 
 }
 
-void PmergeMe::merge_sort(std::deque<std::pair<int, int> > _deque_pairs, int start, int end)
-{
-	(void)start;
-	(void)end;
+// void PmergeMe::merge_sort(std::deque<std::pair<int, int> > _deque_pairs, int start, int end)
+// {
+// 	(void)start;
+// 	(void)end;
 
-	if (_deque_pairs.empty())
-		print_sequence(_deque_pairs);
-	// declarer end
-	// declarer start
-	// declarer une nouvelle deque sorting_deque
-	// calculer mid
-}
+// 	if (_deque_pairs.empty())
+// 		print_sequence(_deque_pairs);
+// 	// declarer end
+// 	// declarer start
+// 	// declarer une nouvelle deque sorting_deque
+// 	// calculer mid
+// }
 
-void PmergeMe::merge_sort(std::vector<std::pair<int, int> > _vector_pairs, int start, int end)
+void PmergeMe::merge_sort(std::vector<std::pair<int, int> > &vector, int start, int end)
 {
 	if (start >= end)
 		return;
 	int mid = (start + end) / 2;
-	merge_sort(_vector_pairs, start, mid);
-	merge_sort(_vector_pairs, mid + 1, end);
-	merge(_vector_pairs, start, mid, end);
+	merge_sort(vector, start, mid);
+	merge_sort(vector, mid + 1, end);
+	merge(vector, start, mid, end);
 }
 
 void PmergeMe::sort(std::vector<int> _int_vector)
@@ -169,8 +191,8 @@ void PmergeMe::sort(std::vector<int> _int_vector)
 	merge_sort(_vector_pairs, 0, _vector_pairs.size() - 1);
 }
 
-void PmergeMe::sort(std::deque<int> _int_deque)
-{
-	DEBUG("here sort deque: ", "");
-	print_sequence(_int_deque);
-}
+// void PmergeMe::sort(std::deque<int> _int_deque)
+// {
+// 	DEBUG("here sort deque: ", "");
+// 	print_sequence(_int_deque);
+// }
