@@ -117,11 +117,10 @@ void PmergeMe::insert_sort(std::vector<int> &vector_arr, int start, int end)
 void PmergeMe::sort(std::vector<int> &vector_arr, int start, int end)
 {
 	// clock begin
-	if (end - start > 5)
+	int size = vector_arr.size() / 2;
+	if (end - start > size)
 	{
 		int mid = ((start + end) / 2);
-		DEBUG("size befor test ", mid);
-
 		sort(vector_arr, start, mid);
 		sort(vector_arr, mid + 1, end);
 		merge_sort(vector_arr, start, mid, end);
