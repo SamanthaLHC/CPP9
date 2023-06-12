@@ -20,8 +20,8 @@ int main(int ac, char **av)
 
 			if ((str_to_conv >> elem_to_check && str_to_conv.rdbuf()->in_avail() == 0) && (elem_to_check >= 0))
 			{
-				int_deque.push_back(elem_to_check);
 				int_vector.push_back(elem_to_check);
+				int_deque.push_back(elem_to_check);
 			}
 			else
 			{
