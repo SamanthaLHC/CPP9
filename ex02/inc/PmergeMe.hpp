@@ -37,13 +37,9 @@ private:
 	int jacobsthal(int n);
 
 	// sort algo
+	std::vector<std::pair<int, int> > merge(const std::vector<int> &input);
 
-	// vec
-	void merge_insertion_sort(std::vector<int> &arr);
-	void insertion_sort(std::vector<int> &arr, int start, int end);
-
-	void merge_insertion_sort(std::deque<int> &dq);
-	void insertion_sort(std::deque<int> &arr, int start, int end);
+	void merge_insert_sort(std::vector<int> &input_list);
 
 	//__________________________________attribute members
 
