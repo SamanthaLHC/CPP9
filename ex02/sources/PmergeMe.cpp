@@ -74,6 +74,17 @@ void PmergeMe::print_sequence(std::vector<int> _int_vector)
 	std::cout << RES << std::endl;
 }
 
+void PmergeMe::print_sequence_paired(std::vector<std::pair<int, int> > _int_vector)
+{
+	std::vector<std::pair < int, int> >::iterator it = _int_vector.begin();
+	for (; it != _int_vector.end(); it++)
+	{
+		std::cout << CYAN << " [ " << it->first << " " << it->second << " ] ";
+		std::cout << " ";
+	}
+	std::cout << RES << std::endl;
+}
+
 void PmergeMe::print_result()
 {
 	std::cout << WHITE << "After:	";
@@ -134,18 +145,56 @@ int PmergeMe::jacobsthal(int n)
 }
 
 
+bool compare_pair(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
+{
+	return lhs.second < rhs.second;
+}
+
+void PmergeMe::sort_pairs(std::vector<std::pair<int, int> > &arr, size_t begin, size_t size)
+{
+	if (size <= 1)
+		return;
+
+	//sort in place
+	int mid = size / 2;
+	sort_pairs(arr, begin, mid);
+	sort_pairs(arr, (begin + mid), (size - mid));
+
+	//last1 et last2 excluded
+	std::vector<std::pair< int, int> >::iterator current_begin = arr.begin() + begin;
+	std::vector<std::pair< int, int> > tmp(size);
+	std::merge(current_begin, current_begin + mid, current_begin + mid,
+			   current_begin + size, tmp.begin(), compare_pair);
+	arr.erase(current_begin, current_begin + size);
+	arr.insert(current_begin, tmp.begin(), tmp.end());
+}
 
 // Fonction récursive
-void PmergeMe::merge_insert_sort(const std::vector<int> &input)
+void PmergeMe::merge_insert_sort(std::vector<int> &arr)
 {
-	if (input.size() <= 1)
+	if (arr.size() <= 1)
+		return;
+
+	bool is_odd = arr.size() % 2 != 0;
+	if (is_odd)
 	{
-		return input;
+		int last_int = arr.back();
+		(void) last_int;
+		arr.pop_back();
 	}
 
-	std::vector<std::pair<int, int> > merged_pairs = merge(input);
+	std::vector<std::pair<int, int> > tmp;
+	for (size_t i = 0; i < arr.size(); i += 2)
+	{
+		tmp.push_back(std::make_pair(std::min(arr[i], arr[i + 1]), std::max(arr[i], arr[i + 1])));
+	}
+	print_sequence_paired(tmp);
+	sort_pairs(tmp, 0, tmp.size());
+	print_sequence_paired(tmp);
 
-	
+
+
+
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
 }

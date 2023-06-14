@@ -31,15 +31,17 @@ private:
 	// utils
 	void print_sequence(std::vector<int> int_vector);
 	void print_sequence(std::deque<int> int_deque);
+	void print_sequence_paired(std::vector<std::pair<int, int> > _int_vector);
+
 	void print_result();
 	void print_time();
 	void launch();
 	int jacobsthal(int n);
 
 	// sort algo
-	std::vector<std::pair<int, int> > merge(const std::vector<int> &input);
+	void sort_pairs(std::vector<std::pair<int, int> > &arr, size_t begin, size_t end);
 
-	void merge_insert_sort(std::vector<int> &input_list);
+	void merge_insert_sort(std::vector<int> &arr);
 
 	//__________________________________attribute members
 
