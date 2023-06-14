@@ -76,7 +76,7 @@ void PmergeMe::print_sequence(std::vector<int> _int_vector)
 
 void PmergeMe::print_sequence_paired(std::vector<std::pair<int, int> > _int_vector)
 {
-	std::vector<std::pair < int, int> >::iterator it = _int_vector.begin();
+	std::vector<std::pair<int, int> >::iterator it = _int_vector.begin();
 	for (; it != _int_vector.end(); it++)
 	{
 		std::cout << CYAN << " [ " << it->first << " " << it->second << " ] ";
@@ -100,7 +100,21 @@ void PmergeMe::print_time()
 			  << " elements with std::deque : " << _deque_time << " us" << RES << std::endl;
 }
 
-// // measure time
+bool compare_pair(const std::pair<int, int> &lhs, const std::pair<int, int> &rhs)
+{
+	return lhs.second < rhs.second;
+}
+
+int PmergeMe::jacobsthal(int n)
+{
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	return jacobsthal(n - 1) + 2 * jacobsthal(n - 2);
+}
+
+// measure time
 
 void PmergeMe::set_time_begin_vec(clock_t time)
 {
@@ -134,35 +148,20 @@ double PmergeMe::get_deq_time()
 
 // sort
 
-int PmergeMe::jacobsthal(int n)
-{
-	if (n == 0)
-		return 0;
-	else if (n == 1)
-		return 1;
-	else
-		return jacobsthal(n - 1) + 2 * jacobsthal(n - 2);
-}
-
-
-bool compare_pair(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
-{
-	return lhs.second < rhs.second;
-}
-
 void PmergeMe::sort_pairs(std::vector<std::pair<int, int> > &arr, size_t begin, size_t size)
 {
 	if (size <= 1)
 		return;
 
-	//sort in place
+	// sort in place
 	int mid = size / 2;
 	sort_pairs(arr, begin, mid);
 	sort_pairs(arr, (begin + mid), (size - mid));
 
-	//last1 et last2 excluded
-	std::vector<std::pair< int, int> >::iterator current_begin = arr.begin() + begin;
-	std::vector<std::pair< int, int> > tmp(size);
+	std::vector<std::pair<int, int> >::iterator current_begin = arr.begin() + begin;
+	std::vector<std::pair<int, int> > tmp(size);
+
+	// last1 et last2 excluded
 	std::merge(current_begin, current_begin + mid, current_begin + mid,
 			   current_begin + size, tmp.begin(), compare_pair);
 	arr.erase(current_begin, current_begin + size);
@@ -175,11 +174,16 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr)
 	if (arr.size() <= 1)
 		return;
 
+	// _____________________________________________________________________________________________
+	// step1: Split the collection in n/2 pairs of 2 elements and order these elements pairwise. If
+	// the number of elements is odd, the last element of the collection isn't paired with any element.
+	// _____________________________________________________________________________________________
+
+	int last_int;
 	bool is_odd = arr.size() % 2 != 0;
 	if (is_odd)
 	{
-		int last_int = arr.back();
-		(void) last_int;
+		last_int = arr.back();
 		arr.pop_back();
 	}
 
@@ -188,12 +192,42 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr)
 	{
 		tmp.push_back(std::make_pair(std::min(arr[i], arr[i + 1]), std::max(arr[i], arr[i + 1])));
 	}
-	print_sequence_paired(tmp);
+
+	// _____________________________________________________________________________________________
+	// step2: Recursively sort the pairs of elements by their highest value.
+	// _____________________________________________________________________________________________
+
 	sort_pairs(tmp, 0, tmp.size());
-	print_sequence_paired(tmp);
 
+	arr.clear(); // erase le contenu pour insérer le contenu trié des pairs de tmp
+	for (size_t i; i < tmp.size(); i++)
+		arr.push_back(tmp[i].second);
 
+	if (is_odd)
+		tmp.push_back(std::make_pair(last_int, arr.back())); // arr.back() est la plus grande val
 
+	// _____________________________________________________________________________________________
+	// step3: Insert the pend elements into the main chain.
+	// _____________________________________________________________________________________________
+
+	// index jacobsthal pour inserer, calculé avec la dist entre les nombres de la suite en sautant 0, 1 ,1
+	size_t jacob_prev = jacobsthal(2);
+
+	std::vector<std::pair<int, int> >::iterator it_curr_tmp = tmp.begin();
+	std::vector<int>::iterator it_curr_arr = arr.begin();
+
+	for (size_t i = 3;; i++)
+	{
+		size_t jacob_curr = jacobsthal(i);
+		size_t distance = jacob_prev - jacob_curr;
+		jacob_prev = jacob_curr;
+
+		if (distance >= std::distance(it_curr_tmp, tmp.end() -1))
+			break;
+
+		std::vector<std::pair<int, int> >::iterator it_tmp = tmp.begin();
+		std::vector<int>::iterator it_arr = arr.begin();
+	}
 
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
