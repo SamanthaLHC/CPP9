@@ -1,57 +1,55 @@
 #ifndef PMERGEME_HPP
 #define PMERGEME_HPP
 
+#include "pmg.hpp"
+
 class PmergeMe
 {
 public:
 	// coplian form_____________________________________________________________
 
+	PmergeMe();
 	PmergeMe(std::deque<int> int_deque, std::vector<int> int_vector, int ac);
 	PmergeMe(PmergeMe const &cpy);
 	~PmergeMe();
 
 	PmergeMe &operator=(PmergeMe const &rhs);
 
+	// measure time
+	void set_time_begin_vec(clock_t time);
+	clock_t get_time_begin_vec();
+	double get_vec_time();
+
+	void set_time_begin_deq(clock_t time);
+	clock_t get_time_begin_deq();
+	double get_deq_time();
+
 private:
 	//__________________________________members functions
 	// useless constructor
-	PmergeMe();
 
 	// utils
-	void print_pairs();
 	void print_sequence(std::vector<int> int_vector);
-	void print_sequence(std::deque<std::pair<int, int> >);
 	void print_sequence(std::deque<int> int_deque);
-	void print_sequence(std::vector<std::pair<int, int> >);
+	void print_result();
+	void print_time();
+	void launch();
+	int jacobsthal(int n);
 
-		// sort algo
-	void make_pairs();
-	// trouver un param pour faire un overload
-	//  void make_pairs();
+	// sort algo
+	std::vector<std::pair<int, int> > merge(const std::vector<int> &input);
 
-	void merge_sort(std::vector<std::pair<int, int> >, int start, int end);
-	void merge_sort(std::deque<std::pair<int, int> >, int start, int end);
-
-	void merge(std::vector<std::pair<int, int> > _vector_pairs, int start, int mid, int end);
-
-	void sort(std::vector<int> int_vector);
-	void sort(std::deque<int> int_deque);
-
-	// measure time
+	void merge_insert_sort(std::vector<int> &input_list);
 
 	//__________________________________attribute members
 
-	int								_last_int;
-	int								_count_elem;
-
-	std::deque<int> 				 _int_deque;
-	std::deque<std::pair<int, int> > _deque_pairs;
-	std::deque<std::pair<int, int> > _deque_merged;
-
-	std::vector<int> 				  _int_vector;
-	std::vector<std::pair<int, int> > _vector_pairs;
-	std::vector<std::pair<int, int> > _vector_merged;
-	std::vector<int> 				  _vector_result;
+	int _count_elem;
+	std::deque<int> _int_deque;
+	std::vector<int> _int_vector;
+	double _vec_time;
+	double _deque_time;
+	clock_t _begin_vec;
+	clock_t _begin_deq;
 };
 
 #endif

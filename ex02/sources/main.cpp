@@ -20,8 +20,17 @@ int main(int ac, char **av)
 
 			if ((str_to_conv >> elem_to_check && str_to_conv.rdbuf()->in_avail() == 0) && (elem_to_check >= 0))
 			{
-				int_deque.push_back(elem_to_check);
+				//vec time and fill vec
+				clock_t begin_vec = clock();
+				PmergeMe pmg_init_time = PmergeMe();
+				pmg_init_time.set_time_begin_vec(begin_vec);
 				int_vector.push_back(elem_to_check);
+
+				//deq time and fill deq
+				clock_t begin_deq = clock();
+				PmergeMe pmg_init_time_dq = PmergeMe();
+				pmg_init_time_dq.set_time_begin_vec(begin_deq);
+				int_deque.push_back(elem_to_check);
 			}
 			else
 			{
