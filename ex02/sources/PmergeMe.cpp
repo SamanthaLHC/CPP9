@@ -84,9 +84,12 @@ void PmergeMe::print_time()
 {
 	std::cout << WHITE << "Time to process a range of: " << _count_elem
 			  << " elements with std::vector : " << _vec_time << " us" << RES << std::endl;
+
+	std::cout << WHITE << "Time to process a range of: " << _count_elem
+			  << " elements with std::deque : " << _deque_time << " us" << RES << std::endl;
 }
 
-// measure time
+// // measure time
 
 void PmergeMe::set_time_begin_vec(clock_t time)
 {
@@ -103,78 +106,199 @@ double PmergeMe::get_vec_time()
 	return _vec_time;
 }
 
-// sort
-void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int end)
+
+void PmergeMe::set_time_begin_deq(clock_t time)
 {
-	int size_first_half = mid - end + 1;
-	int size_second_half = end - mid;
-	std::vector<int> first_half(vector_arr.begin() + start, vector_arr.begin() + mid + 1);
-	std::vector<int> second_half(vector_arr.begin() + mid + 1, vector_arr.begin() + end + 1);
-	int first_arr_idx = 0;
-	int second_arr_idx = 0;
-	for (int i = start; i < end - start + 1; i++)
+	_begin_deq = time;
+}
+
+clock_t PmergeMe::get_time_begin_deq()
+{
+	return _begin_deq;
+}
+
+double PmergeMe::get_deq_time()
+{
+	return _deque_time;
+}
+
+// sort
+
+int PmergeMe::jacobsthal(int n)
+{
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+
+	int a = 0;
+	int b = 1;
+
+	for (int i = 2; i <= n; i++)
 	{
-		if (second_arr_idx == size_second_half)
+		int tmp = b;
+		b = a + 2 * b;
+		a = tmp;
+	}
+
+	return b;
+}
+
+void PmergeMe::insertion_sort(std::vector<int> &arr, int start, int end)
+{
+	for (int i = start + 1; i <= end; i++)
+	{
+		int key = arr[i];
+		int j = i - 1;
+
+		while (j >= start && arr[j] > key)
 		{
-			vector_arr[i] = first_half[first_arr_idx];
-			first_arr_idx++;
+			arr[j + 1] = arr[j];
+			j--;
 		}
-		else if (first_arr_idx == size_first_half)
+
+		arr[j + 1] = key;
+	}
+}
+void PmergeMe::merge_insertion_sort(std::vector<int> &arr)
+{
+	int size = arr.size();
+	if (size <= 1)
+		return;
+
+	int middle = size / 2;
+
+	std::vector<int> left(arr.begin(), arr.begin() + middle);
+	std::vector<int> right(arr.begin() + middle, arr.end());
+
+	merge_insertion_sort(left);
+	merge_insertion_sort(right);
+
+	insertion_sort(arr, 0, middle - 1);
+	insertion_sort(arr, middle, size - 1);
+
+	std::vector<int> tmp;
+
+	size_t i = 0;
+	size_t j = 0;
+
+	while (i < left.size() && j < right.size())
+	{
+		if (left[i] <= right[j])
 		{
-			vector_arr[i] = second_half[second_arr_idx];
-			second_arr_idx++;
-		}
-		else if (second_half[second_arr_idx] > first_half[first_arr_idx])
-		{
-			vector_arr[i] = first_half[first_arr_idx];
-			first_arr_idx++;
+			tmp.push_back(left[i]);
+			i++;
 		}
 		else
 		{
-			vector_arr[i] = second_half[second_arr_idx];
-			second_arr_idx++;
+			tmp.push_back(right[j]);
+			j++;
 		}
 	}
-}
 
-void PmergeMe::insert_sort(std::vector<int> &vector_arr, int start, int end)
-{
-	for (int i = start; i < end; i++)
+	while (i < left.size())
 	{
-		int tmp = vector_arr[i + 1];
-		int j = i + 1;
-		while (j > start && vector_arr[j - 1] > tmp)
-		{
-			vector_arr[j] = vector_arr[j - 1];
-			j--;
-		}
-		vector_arr[j] = tmp;
+		tmp.push_back(left[i]);
+		i++;
 	}
-}
 
-void PmergeMe::sort(std::vector<int> &vector_arr, int start, int end)
-{
-	int size = vector_arr.size() / 2;
-	if (end - start > size)
+	while (j < right.size())
 	{
-		int mid = ((start + end) / 2);
-		sort(vector_arr, start, mid);
-		sort(vector_arr, mid + 1, end);
-		merge_sort(vector_arr, start, mid, end);
+		tmp.push_back(right[j]);
+		j++;
 	}
-	else
-		insert_sort(vector_arr, start, end);
+
+	// Copy sorted elements back to original array
+	for (size_t k = 0; k < tmp.size(); k++)
+	{
+		arr[k] = tmp[k];
+	}
 
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
 }
 
+
+void PmergeMe::insertion_sort(std::deque<int> &arr, int start, int end)
+{
+	for (int i = start + 1; i <= end; i++)
+	{
+		int key = arr[i];
+		int j = i - 1;
+
+		while (j >= start && arr[j] > key)
+		{
+			arr[j + 1] = arr[j];
+			j--;
+		}
+
+		arr[j + 1] = key;
+	}
+}
+void PmergeMe::merge_insertion_sort(std::deque<int> &arr)
+{
+	int size = arr.size();
+	if (size <= 1)
+		return;
+
+	int middle = size / 2;
+
+	std::deque<int> left(arr.begin(), arr.begin() + middle);
+	std::deque<int> right(arr.begin() + middle, arr.end());
+
+	merge_insertion_sort(left);
+	merge_insertion_sort(right);
+
+	insertion_sort(arr, 0, middle - 1);
+	insertion_sort(arr, middle, size - 1);
+
+	std::deque<int> tmp;
+
+	size_t i = 0;
+	size_t j = 0;
+
+	while (i < left.size() && j < right.size())
+	{
+		if (left[i] <= right[j])
+		{
+			tmp.push_back(left[i]);
+			i++;
+		}
+		else
+		{
+			tmp.push_back(right[j]);
+			j++;
+		}
+	}
+
+	while (i < left.size())
+	{
+		tmp.push_back(left[i]);
+		i++;
+	}
+
+	while (j < right.size())
+	{
+		tmp.push_back(right[j]);
+		j++;
+	}
+
+	// Copy sorted elements back to original array
+	for (size_t k = 0; k < tmp.size(); k++)
+	{
+		arr[k] = tmp[k];
+	}
+
+	clock_t end_time = clock();
+	_deque_time = (end_time - _begin_deq) * 1000000 / CLOCKS_PER_SEC;
+}
+
+
+
 void PmergeMe::launch()
 {
-	sort(_int_vector, 0, _int_vector.size() - 1);
+	merge_insertion_sort(_int_vector);
+	merge_insertion_sort(_int_deque);
 	print_result();
 	print_time();
 }
-
-// TODO is sorted if oui affichage if no error
-//FIXME not completely sorted

@@ -1,6 +1,8 @@
 #ifndef PMERGEME_HPP
 #define PMERGEME_HPP
 
+#include "pmg.hpp"
+
 class PmergeMe
 {
 public:
@@ -18,22 +20,30 @@ public:
 	clock_t get_time_begin_vec();
 	double get_vec_time();
 
+	void set_time_begin_deq(clock_t time);
+	clock_t get_time_begin_deq();
+	double get_deq_time();
+
 private:
 	//__________________________________members functions
 	// useless constructor
 
 	// utils
 	void print_sequence(std::vector<int> int_vector);
+	void print_sequence(std::deque<int> int_deque);
 	void print_result();
 	void print_time();
-
-	// void print_sequence(std::deque<int> int_deque);
+	void launch();
+	int jacobsthal(int n);
 
 	// sort algo
-	void launch();
-	void sort(std::vector<int> &vector, int start, int end);
-	void merge_sort(std::vector<int> &vector, int start, int mid, int end);
-	void insert_sort(std::vector<int> &vector, int start, int end);
+
+	// vec
+	void merge_insertion_sort(std::vector<int> &arr);
+	void insertion_sort(std::vector<int> &arr, int start, int end);
+
+	void merge_insertion_sort(std::deque<int> &dq);
+	void insertion_sort(std::deque<int> &arr, int start, int end);
 
 	//__________________________________attribute members
 
