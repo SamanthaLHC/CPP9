@@ -39,9 +39,7 @@ private:
 	int jacobsthal(int n);
 
 	// sort algo
-	void sort_pairs(std::vector<std::pair<int, int> > &arr, size_t begin, size_t end);
-
-	void merge_insert_sort(std::vector<int> &arr);
+	void merge_insert_sort(std::vector<int> &arr, size_t begin, size_t size);
 
 	//__________________________________attribute members
 

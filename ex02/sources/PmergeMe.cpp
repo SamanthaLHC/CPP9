@@ -147,31 +147,9 @@ double PmergeMe::get_deq_time()
 }
 
 // sort
-
-void PmergeMe::sort_pairs(std::vector<std::pair<int, int> > &arr, size_t begin, size_t size)
+void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t size)
 {
 	if (size <= 1)
-		return;
-
-	// sort in place
-	int mid = size / 2;
-	sort_pairs(arr, begin, mid);
-	sort_pairs(arr, (begin + mid), (size - mid));
-
-	std::vector<std::pair<int, int> >::iterator current_begin = arr.begin() + begin;
-	std::vector<std::pair<int, int> > tmp(size);
-
-	// last1 et last2 excluded
-	std::merge(current_begin, current_begin + mid, current_begin + mid,
-			   current_begin + size, tmp.begin(), compare_pair);
-	arr.erase(current_begin, current_begin + size);
-	arr.insert(current_begin, tmp.begin(), tmp.end());
-}
-
-// Fonction récursive
-void PmergeMe::merge_insert_sort(std::vector<int> &arr)
-{
-	if (arr.size() <= 1)
 		return;
 
 	// _____________________________________________________________________________________________
@@ -179,32 +157,34 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr)
 	// the number of elements is odd, the last element of the collection isn't paired with any element.
 	// _____________________________________________________________________________________________
 
-	int last_int;
 	bool is_odd = arr.size() % 2 != 0;
-	if (is_odd)
-	{
-		last_int = arr.back();
-		arr.pop_back();
-	}
+	size -= is_odd; // last elem mis de côté pour ne s'occuper que d'une collec paire.
 
-	std::vector<std::pair<int, int> > tmp;
-	for (size_t i = 0; i < arr.size(); i += 2)
+	for (size_t i = begin; i < size; i += 2)
 	{
-		tmp.push_back(std::make_pair(std::min(arr[i], arr[i + 1]), std::max(arr[i], arr[i + 1])));
+		if (arr[i] > arr[i + 1])
+			std::swap(arr[i], arr[i + 1]);
 	}
 
 	// _____________________________________________________________________________________________
 	// step2: Recursively sort the pairs of elements by their highest value.
 	// _____________________________________________________________________________________________
 
-	sort_pairs(tmp, 0, tmp.size());
+	int mid = size / 2;
+	merge_insert_sort(arr, begin, mid);
+	merge_insert_sort(arr, (begin + mid), (size - mid));
 
-	arr.clear(); // erase le contenu pour insérer le contenu trié des pairs de tmp
-	for (size_t i; i < tmp.size(); i++)
-		arr.push_back(tmp[i].second);
+	std::vector<int> high_value_chain;
+	std::vector<int> pend_low_value;
+
+	for (size_t i = begin; i < size; i += 2)
+	{
+		high_value_chain.push_back(arr[i + 1]);
+		pend_low_value.push_back(arr[i]);
+	}
 
 	if (is_odd)
-		tmp.push_back(std::make_pair(last_int, arr.back())); // arr.back() est la plus grande val
+		pend_low_value.push_back(arr[size]);
 
 	// _____________________________________________________________________________________________
 	// step3: Insert the pend elements into the main chain.
@@ -213,8 +193,8 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr)
 	// index jacobsthal pour inserer, calculé avec la dist entre les nombres de la suite en sautant 0, 1 ,1
 	size_t jacob_prev = jacobsthal(2);
 
-	std::vector<std::pair<int, int> >::iterator it_curr_tmp = tmp.begin();
-	std::vector<int>::iterator it_curr_arr = arr.begin();
+	std::vector<int>::iterator it_curr_chain = high_value_chain.begin();
+	std::vector<int>::iterator it_curr_pend = pend_low_value.begin();
 
 	for (size_t i = 3;; i++)
 	{
@@ -222,12 +202,14 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr)
 		size_t distance = jacob_prev - jacob_curr;
 		jacob_prev = jacob_curr;
 
-		if (distance >= std::distance(it_curr_tmp, tmp.end() -1))
+		if (distance >= std::distance(it_curr_pend, pend_low_value.end() - 1))
 			break;
 
-		std::vector<std::pair<int, int> >::iterator it_tmp = tmp.begin();
-		std::vector<int>::iterator it_arr = arr.begin();
+		std::vector<int>::iterator it_chain = high_value_chain.begin();
+		std::vector<int>::iterator it_pend = pend_low_value.begin();
 	}
+	// arr.erase(current_begin, current_begin + size);
+	// arr.insert(current_begin, tmp.begin(), tmp.end());
 
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
@@ -235,7 +217,7 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr)
 
 void PmergeMe::launch()
 {
-	merge_insert_sort(_int_vector);
+	merge_insert_sort(_int_vector, 0, _int_vector.size());
 	// merge_insert_sort(_int_deque);
 	print_result();
 	print_time();
