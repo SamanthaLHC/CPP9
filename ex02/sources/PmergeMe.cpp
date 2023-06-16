@@ -188,7 +188,10 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 	std::vector<int> main_chain;
 	std::vector<int> pend_low_value;
 
-	for (size_t i = begin; i < begin + size; i += 2)
+	// Insert the first "pair" anyways
+	main_chain.push_back(arr[begin]);
+	main_chain.push_back(arr[begin + 1]);
+	for (size_t i = begin + 2; i < begin + size; i += 2)
 	{
 		main_chain.push_back(arr[i + 1]);
 		pend_low_value.push_back(arr[i]);
@@ -221,6 +224,7 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 
 		jacob_prev = jacob_curr;
 
+		DEBUG("distance to pend-end: ", std::distance(it_curr_pend, pend_low_value.end() - 1));
 		if (distance >= std::distance(it_curr_pend, pend_low_value.end() - 1))
 			break;
 
@@ -253,11 +257,14 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 		std::vector<int>::iterator insert_it =
 			std::upper_bound(main_chain.begin(), main_chain.end(), *it_curr_pend);
 		DEBUG("lastloop inserting: ", *it_curr_pend);
-		DEBUG("lastloop before: ", *insert_it);
+		if (insert_it == main_chain.end())
+			DEBUG("lastloop before: ", "end");
+		else
+			DEBUG("lastloop before: ", *insert_it);
 		main_chain.insert(insert_it, *it_curr_pend);
 		it_curr_pend++;
 	}
-	arr.erase(arr.begin() + begin, arr.begin() + begin + size);
+	arr.erase(arr.begin() + begin, arr.begin() + begin + size + is_odd);
 	arr.insert(arr.begin() + begin, main_chain.begin(), main_chain.end());
 
 	clock_t end_time = clock();
