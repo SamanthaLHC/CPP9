@@ -157,7 +157,7 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 	// the number of elements is odd, the last element of the collection isn't paired with any element.
 	// _____________________________________________________________________________________________
 
-	bool is_odd = arr.size() % 2 != 0;
+	bool is_odd = size % 2 != 0;
 	size -= is_odd; // last elem mis de côté pour ne s'occuper que d'une collec paire.
 
 	for (size_t i = begin; i < size; i += 2)
@@ -172,19 +172,29 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 
 	int mid = size / 2;
 	merge_insert_sort(arr, begin, mid);
-	merge_insert_sort(arr, (begin + mid), (size - mid));
+	merge_insert_sort(arr, (begin + mid), mid);
 
-	std::vector<int> high_value_chain;
+	DEBUG("vector array: ", "");
+	print_sequence(arr);
+
+
+	std::vector<int> main_chain;
 	std::vector<int> pend_low_value;
 
 	for (size_t i = begin; i < size; i += 2)
 	{
-		high_value_chain.push_back(arr[i + 1]);
+		main_chain.push_back(arr[i + 1]);
 		pend_low_value.push_back(arr[i]);
 	}
 
 	if (is_odd)
 		pend_low_value.push_back(arr[size]);
+
+	DEBUG("is odd: ", is_odd);
+	DEBUG("main chain: ", "");
+	print_sequence(main_chain);
+	DEBUG("pend elem chain: ", "");
+	print_sequence(pend_low_value);
 
 	// _____________________________________________________________________________________________
 	// step3: Insert the pend elements into the main chain.
@@ -193,23 +203,42 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 	// index jacobsthal pour inserer, calculé avec la dist entre les nombres de la suite en sautant 0, 1 ,1
 	size_t jacob_prev = jacobsthal(2);
 
-	std::vector<int>::iterator it_curr_chain = high_value_chain.begin();
+	std::vector<int>::iterator it_curr_chain = main_chain.begin(); // highest elem
 	std::vector<int>::iterator it_curr_pend = pend_low_value.begin();
 
 	for (size_t i = 3;; i++)
 	{
 		size_t jacob_curr = jacobsthal(i);
-		size_t distance = jacob_prev - jacob_curr;
+		int distance = jacob_prev - jacob_curr;
 		jacob_prev = jacob_curr;
 
 		if (distance >= std::distance(it_curr_pend, pend_low_value.end() - 1))
 			break;
 
-		std::vector<int>::iterator it_chain = high_value_chain.begin();
-		std::vector<int>::iterator it_pend = pend_low_value.begin();
+		std::vector<int>::iterator it_chain = it_curr_chain + 2 * distance;
+		std::vector<int>::iterator it_pend = it_curr_pend + distance;
+
+		// insere à reculon depui l'idx de jacobstal jusquà l'idx de jacobsthal précédent
+		do
+		{
+			it_pend--;
+			it_chain -= 2; // saute l'elem qui vient d'être inseré ou saute un elem de la main chain
+			std::vector<int>::iterator insert_it =
+				std::upper_bound(main_chain.begin(), it_chain, *it_pend);
+			main_chain.insert(insert_it, *it_pend);
+		} while (it_pend != it_curr_pend);
+
+		it_curr_chain = it_curr_chain + 2 * distance;
+		it_curr_pend = it_curr_pend + distance;
 	}
-	// arr.erase(current_begin, current_begin + size);
-	// arr.insert(current_begin, tmp.begin(), tmp.end());
+	if (is_odd)
+	{
+		std::vector<int>::iterator insert_it =
+			std::upper_bound(main_chain.begin(), main_chain.end(), pend_low_value.back());
+		main_chain.insert(insert_it, pend_low_value.back());
+	}
+	arr.erase(arr.begin() + begin, arr.begin() + begin + size);
+	arr.insert(arr.begin() + begin, main_chain.begin(), main_chain.end());
 
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
