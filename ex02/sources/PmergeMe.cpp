@@ -149,8 +149,12 @@ double PmergeMe::get_deq_time()
 // sort
 void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t size)
 {
-	if (size <= 1)
+	DEBUG(">>>>>>>> size=", size);
+		if (size <= 1)
+	{
+		DEBUG("<<<<<<<", "");
 		return;
+	}
 
 	// _____________________________________________________________________________________________
 	// step1: Split the collection in n/2 pairs of 2 elements and order these elements pairwise. If
@@ -171,17 +175,20 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 	// _____________________________________________________________________________________________
 
 	int mid = size / 2;
+	DEBUG("Recursing left: begin=", begin);
 	merge_insert_sort(arr, begin, mid);
+	DEBUG("Recursing right: begin=", begin+mid);
 	merge_insert_sort(arr, (begin + mid), mid);
 
+	DEBUG("begin: ", begin);
+	DEBUG("size: ", size);
 	DEBUG("vector array: ", "");
 	print_sequence(arr);
-
 
 	std::vector<int> main_chain;
 	std::vector<int> pend_low_value;
 
-	for (size_t i = begin; i < size; i += 2)
+	for (size_t i = begin; i < begin + size; i += 2)
 	{
 		main_chain.push_back(arr[i + 1]);
 		pend_low_value.push_back(arr[i]);
@@ -209,7 +216,9 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 	for (size_t i = 3;; i++)
 	{
 		size_t jacob_curr = jacobsthal(i);
-		int distance = jacob_prev - jacob_curr;
+		int distance = jacob_curr - jacob_prev;
+		DEBUG("distance: ", distance);
+
 		jacob_prev = jacob_curr;
 
 		if (distance >= std::distance(it_curr_pend, pend_low_value.end() - 1))
@@ -217,31 +226,43 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t begin, size_t siz
 
 		std::vector<int>::iterator it_chain = it_curr_chain + 2 * distance;
 		std::vector<int>::iterator it_pend = it_curr_pend + distance;
+		DEBUG("it pend: ", std::distance(pend_low_value.begin(), it_pend));
 
 		// insere à reculon depui l'idx de jacobstal jusquà l'idx de jacobsthal précédent
 		do
 		{
 			it_pend--;
+			DEBUG("it pend: ", std::distance(pend_low_value.begin(), it_pend));
+
 			it_chain -= 2; // saute l'elem qui vient d'être inseré ou saute un elem de la main chain
 			std::vector<int>::iterator insert_it =
 				std::upper_bound(main_chain.begin(), it_chain, *it_pend);
+
+			DEBUG("inserting: ", *it_pend);
+			DEBUG("before: ", *insert_it);
 			main_chain.insert(insert_it, *it_pend);
 		} while (it_pend != it_curr_pend);
 
 		it_curr_chain = it_curr_chain + 2 * distance;
 		it_curr_pend = it_curr_pend + distance;
 	}
-	if (is_odd)
+//	if (it_curr_pend != pend_low_value.end())
+//		it_curr_pend++;
+	while (it_curr_pend != pend_low_value.end())
 	{
 		std::vector<int>::iterator insert_it =
-			std::upper_bound(main_chain.begin(), main_chain.end(), pend_low_value.back());
-		main_chain.insert(insert_it, pend_low_value.back());
+			std::upper_bound(main_chain.begin(), main_chain.end(), *it_curr_pend);
+		DEBUG("lastloop inserting: ", *it_curr_pend);
+		DEBUG("lastloop before: ", *insert_it);
+		main_chain.insert(insert_it, *it_curr_pend);
+		it_curr_pend++;
 	}
 	arr.erase(arr.begin() + begin, arr.begin() + begin + size);
 	arr.insert(arr.begin() + begin, main_chain.begin(), main_chain.end());
 
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
+	DEBUG("<<<<<<<", "");
 }
 
 void PmergeMe::launch()
