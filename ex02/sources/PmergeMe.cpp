@@ -1,5 +1,28 @@
 #include "pmg.hpp"
 
+void print_stepped(const std::vector<int> &_int_vector, size_t step)
+{
+	for (size_t idx=0; idx < _int_vector.size(); idx++)
+	{
+		std::cout << WHITE;
+		if (idx % (step*2) == 0)
+			std::cout << "(";
+		if (idx % step == 0)
+			std::cout << "[";
+		std::cout << _int_vector[idx];
+		if (idx % (step * 2) == (step * 2 - 1))
+			std::cout << "]) ";
+		else if (idx % step == (step - 1))
+			std::cout << "] ";
+		else
+			std::cout << " ";
+	}
+	if (_int_vector.size() % step != 0)
+		std::cout << "?])";
+	std::cout << RES << std::endl;
+}
+
+
 //==================================================================================================
 //		constructors / destructors
 //==================================================================================================
@@ -184,15 +207,26 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t step, size_t size
 	std::vector<int> pend_low_value;
 
 	// Insert the first "pair"
+	INFO("Building Chain & Pend from:", "");
+	print_stepped(arr, step);
 	main_chain.insert(main_chain.end(), arr.begin(), arr.begin() + 2 * step); // on push les 2 premieres unités
 	for (size_t i = step * 2; i < step * size; i += 2 * step)
 	{
+		// DEBUG("IN MAIN CHAIN_____ --> index: ", i + step + offset);
+		// DEBUG("IN MAIN CHAIN_____ --> val: ", *(arr.begin() + i + step + offset));
 		main_chain.insert(main_chain.end(), arr.begin() + i + step, arr.begin() + i + 2 * step); // on push l'unité la plus forte de la paire
+		// DEBUG("IN PEND_____ --> index: ", i + offset);
+		// DEBUG("IN PEND_____ --> val: ", *(arr.begin() + i + offset));
 		pend_low_value.insert(pend_low_value.end(), arr.begin() + i, arr.begin() + i + step);	 // on push l'unité la plus faible
 	}
 
 	if (is_odd)
-		pend_low_value.insert(pend_low_value.end(), arr.begin() + size * step, arr.begin() + (size + 1) * step); // on push odd one
+		pend_low_value.insert(pend_low_value.end(), arr.begin() + size * step, arr.end()); // on push odd one
+
+	DEBUG("Main chain", "");
+	print_sequence(main_chain);
+	DEBUG("Pend elements: ", "");
+	print_sequence(pend_low_value);
 
 	// _____________________________________________________________________________________________
 	// step3: Insert the pend elements into the main chain.
@@ -235,16 +269,29 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t step, size_t size
 	}
 	//	if (it_curr_pend != pend_low_value.end())
 	//		it_curr_pend++;
+	DEBUG("Remains elemnts in pend: ", std::distance(it_curr_pend, pend_low_value.end()));
+	print_stepped(arr, step);
+	print_sequence(main_chain);
 	while (it_curr_pend != pend_low_value.end())
 	{
+		DEBUG("running for extr INSERTS", "");
 		std::vector<int>::iterator insert_it =
 			find_upper_bound(main_chain.begin(), main_chain.end(), *(it_curr_pend + offset), step);
 		main_chain.insert(insert_it, it_curr_pend, it_curr_pend + step);
+		if (std::distance(it_curr_pend, pend_low_value.end()) < static_cast<int>(step))
+		{
+			DEBUG("Remains elemnts in pend: ", std::distance(it_curr_pend, pend_low_value.end()));
+			break;
+		}
 		it_curr_pend += step;
+		DEBUG("Remains elemnts in pend: ", std::distance(it_curr_pend, pend_low_value.end()));
 	}
-	arr.erase(arr.begin(), arr.begin() + (size + is_odd) * step);
+	INFO("pre-erase", "");
+	arr.erase(arr.begin(), arr.end()); // begin() + (size + is_odd) * step);
 	arr.insert(arr.begin(), main_chain.begin(), main_chain.end());
 
+	INFO("as sorted when leaving step: ", step);
+	print_stepped(arr, step);
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
 }
