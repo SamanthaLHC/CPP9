@@ -166,14 +166,8 @@ void PmergeMe::merge_insert_sort(std::vector<int> &arr, size_t step, size_t size
 	// _____________________________________________________________________________________________
 
 	bool is_odd = size % 2 != 0;
-	size -= is_odd; // last elem mis de côté pour ne s'occuper que d'une collec paire.
-	size_t offset = step - 1;
+	size -= is_odd; // last elem mis de côté pour ne s'occuper que d'une collec paire.// TODO
 
-	for (size_t i = 0; i < (step * size); i += 2 * step)
-	{
-		if (arr[i + offset] > arr[i + step + offset])
-			std::swap_ranges(arr.begin() + i, arr.begin() + step + i, arr.begin() + step + i);
-	}
 	// _____________________________________________________________________________________________
 	// step2: Recursively sort the pairs of elements by their highest value.
 	// _____________________________________________________________________________________________
