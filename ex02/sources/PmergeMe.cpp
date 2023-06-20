@@ -13,16 +13,22 @@ PmergeMe::PmergeMe() : _count_elem(0),
 
 PmergeMe::PmergeMe(std::deque<int> _int_deque, std::vector<int> _int_vector, int ac) : _count_elem(ac),
 																					   _int_deque(_int_deque),
-																					   _int_vector(_int_vector)
+																					   _int_vector(_int_vector),
+																					   _begin_vec(0),
+																					   _begin_deq(0)
 {
 	std::cout << WHITE << "Before:	";
 	print_sequence(_int_vector);
+	(void) _deque_time; //TODO enlever
 	launch();
 }
 
 PmergeMe::PmergeMe(PmergeMe const &cpy) : _count_elem(cpy._count_elem),
 										  _int_deque(cpy._int_deque),
-										  _int_vector(cpy._int_vector)
+										  _int_vector(cpy._int_vector),
+										  _begin_vec(cpy._begin_vec),
+										  _begin_deq(cpy._begin_deq)
+
 {
 	*this = cpy;
 }
@@ -42,6 +48,8 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &rhs)
 		_int_deque = rhs._int_deque;
 		_int_vector = rhs._int_vector;
 		_count_elem = rhs._count_elem;
+		_begin_vec = rhs._begin_vec;
+		_begin_deq = rhs._begin_deq;
 	}
 	return *this;
 }
@@ -104,9 +112,26 @@ double PmergeMe::get_vec_time()
 }
 
 // sort
+
+void PmergeMe::insert_sort(std::vector<int> &vector_arr, int start, int end)
+{
+	for (int i = start; i < end; i++)
+	{
+		int tmp = vector_arr[i + 1];
+		int j = i + 1;
+		while (j > start && vector_arr[j - 1] > tmp)
+		{
+			vector_arr[j] = vector_arr[j - 1];
+			j--;
+		}
+		vector_arr[j] = tmp;
+	}
+	std::vector<int> tmp(vector_arr.begin() + start, vector_arr.begin() + end - 1);
+}
+
 void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int end)
 {
-	int size_first_half = mid - end + 1;
+	int size_first_half = mid - start + 1;
 	int size_second_half = end - mid;
 	std::vector<int> first_half(vector_arr.begin() + start, vector_arr.begin() + mid + 1);
 	std::vector<int> second_half(vector_arr.begin() + mid + 1, vector_arr.begin() + end + 1);
@@ -137,21 +162,6 @@ void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int 
 	}
 }
 
-void PmergeMe::insert_sort(std::vector<int> &vector_arr, int start, int end)
-{
-	for (int i = start; i < end; i++)
-	{
-		int tmp = vector_arr[i + 1];
-		int j = i + 1;
-		while (j > start && vector_arr[j - 1] > tmp)
-		{
-			vector_arr[j] = vector_arr[j - 1];
-			j--;
-		}
-		vector_arr[j] = tmp;
-	}
-}
-
 void PmergeMe::sort(std::vector<int> &vector_arr, int start, int end)
 {
 	int size = vector_arr.size() / 2;
@@ -176,5 +186,4 @@ void PmergeMe::launch()
 	print_time();
 }
 
-// TODO is sorted if oui affichage if no error
-//FIXME not completely sorted
+// FIXME not completely sorted
