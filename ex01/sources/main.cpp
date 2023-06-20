@@ -4,7 +4,7 @@ int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		ERROR("USAGE: ./RPN  <numeric sequence>");
+		ERROR("USAGE: ./RPN  <inverted Polish mathematical expression with numbers < 10 >");
 		return 1;
 	}
 	else

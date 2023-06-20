@@ -102,7 +102,7 @@ void RevPolishNot::process_sequence(std::string const &seq)
 				}
 				else
 				{
-					PRINT("Error.");
+					PRINT("Error. First elem is an operator.");
 					return;
 				}
 			}
@@ -116,13 +116,13 @@ void RevPolishNot::process_sequence(std::string const &seq)
 			}
 			else
 			{
-				PRINT("Error.");
+				PRINT("Error. not a digit nor an ope");
 				return;
 			}
 		}
 		else
 		{
-			PRINT("Error.");
+			PRINT("Error. bad operator emplacement.");
 			return;
 		}
 		i = pos + 1;
@@ -130,5 +130,5 @@ void RevPolishNot::process_sequence(std::string const &seq)
 	if (_sequence.size() == 1)
 		PRINT(_sequence.top());
 	else
-		PRINT("Error.");
+		PRINT("Error. No operator");
 }

@@ -1,6 +1,8 @@
 #ifndef REVPOLISHNOT
 #define REVPOLISHNOT
 
+#include "rpn.hpp"
+
 class RevPolishNot
 {
 public:
