@@ -18,12 +18,17 @@ public:
 	clock_t get_time_begin_vec();
 	double get_vec_time();
 
+	void set_time_begin_deq(clock_t time);
+	clock_t get_time_begin_deq();
+	double get_deq_time();
+
 private:
 	//__________________________________members functions
 	// useless constructor
 
 	// utils
 	void print_sequence(std::vector<int> int_vector);
+	void print_sequence(std::deque<int> _int_deque);
 	void print_result();
 	void print_time();
 
@@ -34,6 +39,10 @@ private:
 	void sort(std::vector<int> &vector, int start, int end);
 	void merge_sort(std::vector<int> &vector, int start, int mid, int end);
 	void insert_sort(std::vector<int> &vector, int start, int end);
+
+	void sort(std::deque<int> &deq, int start, int end);
+	void merge_sort(std::deque<int> &deq, int start, int mid, int end);
+	void insert_sort(std::deque<int> &deq, int start, int end);
 
 	//__________________________________attribute members
 
