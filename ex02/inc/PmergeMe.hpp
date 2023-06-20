@@ -34,11 +34,8 @@ private:
 	void print_result();
 	void print_time();
 	void launch();
-	int jacobsthal(int n);
 
 	// sort algo
-
-	// vec
 	void merge_insertion_sort(std::vector<int> &arr);
 	void insertion_sort(std::vector<int> &arr, int start, int end);
 

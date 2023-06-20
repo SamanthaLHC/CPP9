@@ -13,7 +13,9 @@ PmergeMe::PmergeMe() : _count_elem(0),
 
 PmergeMe::PmergeMe(std::deque<int> _int_deque, std::vector<int> _int_vector, int ac) : _count_elem(ac),
 																					   _int_deque(_int_deque),
-																					   _int_vector(_int_vector)
+																					   _int_vector(_int_vector),
+																					   _begin_vec(0),
+																					   _begin_deq(0)
 {
 	std::cout << WHITE << "Before:	";
 	print_sequence(_int_vector);
@@ -22,7 +24,9 @@ PmergeMe::PmergeMe(std::deque<int> _int_deque, std::vector<int> _int_vector, int
 
 PmergeMe::PmergeMe(PmergeMe const &cpy) : _count_elem(cpy._count_elem),
 										  _int_deque(cpy._int_deque),
-										  _int_vector(cpy._int_vector)
+										  _int_vector(cpy._int_vector),
+										  _begin_vec(cpy._begin_vec),
+										  _begin_deq(cpy._begin_deq)
 {
 	*this = cpy;
 }
@@ -42,6 +46,8 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &rhs)
 		_int_deque = rhs._int_deque;
 		_int_vector = rhs._int_vector;
 		_count_elem = rhs._count_elem;
+		_begin_vec = rhs._begin_vec;
+		_begin_deq = rhs._begin_deq;
 	}
 	return *this;
 }
@@ -52,16 +58,16 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &rhs)
 
 // print
 
-// void PmergeMe::print_sequence(std::deque<int> _int_deque)
-// {
-// 	std::deque<int>::iterator it = _int_deque.begin();
-// 	for (; it != _int_deque.end(); it++)
-// 	{
-// 		std::cout << WHITE << *it;
-// 		std::cout << " ";
-// 	}
-// 	std::cout << RES << std::endl;
-// }
+void PmergeMe::print_sequence(std::deque<int> _int_deque)
+{
+	std::deque<int>::iterator it = _int_deque.begin();
+	for (; it != _int_deque.end(); it++)
+	{
+		std::cout << WHITE << *it;
+		std::cout << " ";
+	}
+	std::cout << RES << std::endl;
+}
 
 void PmergeMe::print_sequence(std::vector<int> _int_vector)
 {
@@ -106,7 +112,6 @@ double PmergeMe::get_vec_time()
 	return _vec_time;
 }
 
-
 void PmergeMe::set_time_begin_deq(clock_t time)
 {
 	_begin_deq = time;
@@ -123,27 +128,6 @@ double PmergeMe::get_deq_time()
 }
 
 // sort
-
-int PmergeMe::jacobsthal(int n)
-{
-	if (n == 0)
-		return 0;
-	if (n == 1)
-		return 1;
-
-	int a = 0;
-	int b = 1;
-
-	for (int i = 2; i <= n; i++)
-	{
-		int tmp = b;
-		b = a + 2 * b;
-		a = tmp;
-	}
-
-	return b;
-}
-
 void PmergeMe::insertion_sort(std::vector<int> &arr, int start, int end)
 {
 	for (int i = start + 1; i <= end; i++)
@@ -218,7 +202,6 @@ void PmergeMe::merge_insertion_sort(std::vector<int> &arr)
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
 }
 
-
 void PmergeMe::insertion_sort(std::deque<int> &arr, int start, int end)
 {
 	for (int i = start + 1; i <= end; i++)
@@ -292,8 +275,6 @@ void PmergeMe::merge_insertion_sort(std::deque<int> &arr)
 	clock_t end_time = clock();
 	_deque_time = (end_time - _begin_deq) * 1000000 / CLOCKS_PER_SEC;
 }
-
-
 
 void PmergeMe::launch()
 {
