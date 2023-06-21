@@ -91,7 +91,7 @@ void RevPolishNot::process_sequence(std::string const &seq)
 			if (isoperator(token[0]))
 			{
 				_operator = token[0];
-				if (_sequence.size() >= 1)
+				if (_sequence.size() >= 0)
 				{
 					_term_b = _sequence.top();
 					_sequence.pop();
@@ -110,7 +110,7 @@ void RevPolishNot::process_sequence(std::string const &seq)
 			else if (isdigit(token[0]))
 			{
 				std::istringstream str(token);
-				int number;
+				int number = 0;
 				if (str >> number)
 					_sequence.push(number);
 			}
