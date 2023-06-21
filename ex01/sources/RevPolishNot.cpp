@@ -91,7 +91,7 @@ void RevPolishNot::process_sequence(std::string const &seq)
 			if (isoperator(token[0]))
 			{
 				_operator = token[0];
-				if (_sequence.size() >= 2)
+				if (_sequence.size() >= 1)
 				{
 					_term_b = _sequence.top();
 					_sequence.pop();
@@ -114,21 +114,14 @@ void RevPolishNot::process_sequence(std::string const &seq)
 				if (str >> number)
 					_sequence.push(number);
 			}
-			else
-			{
-				PRINT("Error. not a digit nor an ope");
-				return;
-			}
 		}
 		else
 		{
-			PRINT("Error. bad operator emplacement.");
+			// not ad digit nor operator
+			PRINT("Error. Not a digit nor an operator.");
 			return;
 		}
 		i = pos + 1;
 	}
-	if (_sequence.size() == 1)
-		PRINT(_sequence.top());
-	else
-		PRINT("Error. No operator");
+	PRINT(_sequence.top());
 }
