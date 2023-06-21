@@ -289,19 +289,15 @@ bool BitcoinExchange::value_is_valid()
 		return false;
 	}
 
-	if (_is_int)
+	if (_value_nb < 0)
 	{
-
-		if (_value_nb < 0)
-		{
-			_error_message = "Error: not a positive number.";
-			return false;
-		}
-		else if (_value_nb > 1000)
-		{
-			_error_message = "Error: too large a number.";
-			return false;
-		}
+		_error_message = "Error: not a positive number.";
+		return false;
+	}
+	else if (_value_nb > 1000)
+	{
+		_error_message = "Error: too large a number.";
+		return false;
 	}
 	return true;
 }
