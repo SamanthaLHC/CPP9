@@ -30,4 +30,5 @@
 #define INFO(str, var) std::cout << MAGENTA << str << var << RES << std::endl
 #define PRINT(str, var) std::cout << WHITE << str << var << std::endl
 
+
 #endif
