@@ -179,14 +179,14 @@ void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int 
 	}
 }
 
-void PmergeMe::sort(std::vector<int> &vector_arr, int start, int end)
+void PmergeMe::merge_insert_sort(std::vector<int> &vector_arr, int start, int end)
 {
 	int size = vector_arr.size() / 2;
 	if (end - start > size)
 	{
 		int mid = ((start + end) / 2);
-		sort(vector_arr, start, mid);
-		sort(vector_arr, mid + 1, end);
+		merge_insert_sort(vector_arr, start, mid);
+		merge_insert_sort(vector_arr, mid + 1, end);
 		merge_sort(vector_arr, start, mid, end);
 	}
 	else
@@ -249,14 +249,14 @@ void PmergeMe::merge_sort(std::deque<int> &deque_arr, int start, int mid, int en
 	}
 }
 
-void PmergeMe::sort(std::deque<int> &deque_arr, int start, int end)
+void PmergeMe::merge_insert_sort(std::deque<int> &deque_arr, int start, int end)
 {
 	int size = deque_arr.size() / 2;
 	if (end - start > size)
 	{
 		int mid = ((start + end) / 2);
-		sort(deque_arr, start, mid);
-		sort(deque_arr, mid + 1, end);
+		merge_insert_sort(deque_arr, start, mid);
+		merge_insert_sort(deque_arr, mid + 1, end);
 		merge_sort(deque_arr, start, mid, end);
 	}
 	else
@@ -268,8 +268,8 @@ void PmergeMe::sort(std::deque<int> &deque_arr, int start, int end)
 
 void PmergeMe::launch()
 {
-	sort(_int_vector, 0, _int_vector.size() - 1);
-	sort(_int_deque, 0, _int_deque.size() - 1);
+	merge_insert_sort(_int_vector, 0, _int_vector.size() - 1);
+	merge_insert_sort(_int_deque, 0, _int_deque.size() - 1);
 	print_result();
 	print_time();
 }

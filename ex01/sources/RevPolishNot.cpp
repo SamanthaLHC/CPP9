@@ -91,7 +91,7 @@ void RevPolishNot::process_sequence(std::string const &seq)
 			if (isoperator(token[0]))
 			{
 				_operator = token[0];
-				if (_sequence.size() >= 0)
+				if (_sequence.size() > 0)
 				{
 					_term_b = _sequence.top();
 					_sequence.pop();
@@ -118,7 +118,7 @@ void RevPolishNot::process_sequence(std::string const &seq)
 		else
 		{
 			// not ad digit nor operator
-			PRINT("Error. Not a digit nor an operator.");
+			PRINT("Error. Not an integer < 10 nor an operator.");
 			return;
 		}
 		i = pos + 1;

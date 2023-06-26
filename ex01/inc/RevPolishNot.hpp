@@ -36,7 +36,7 @@ private:
 	int _term_a;
 	int _term_b;
 	int _result;
-	std::stack<int, std::vector<int> > _sequence;
+	std::stack<int, std::list<int> > _sequence;
 };
 
 #endif

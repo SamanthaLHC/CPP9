@@ -34,13 +34,13 @@ private:
 
 	// void print_sequence(std::deque<int> int_deque);
 
-	// sort algo
+	// merge_insert_sort algo
 	void launch();
-	void sort(std::vector<int> &vector, int start, int end);
+	void merge_insert_sort(std::vector<int> &vector, int start, int end);
 	void merge_sort(std::vector<int> &vector, int start, int mid, int end);
 	void insert_sort(std::vector<int> &vector, int start, int end);
 
-	void sort(std::deque<int> &deq, int start, int end);
+	void merge_insert_sort(std::deque<int> &deq, int start, int end);
 	void merge_sort(std::deque<int> &deq, int start, int mid, int end);
 	void insert_sort(std::deque<int> &deq, int start, int end);
 

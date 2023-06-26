@@ -37,7 +37,7 @@ re: fclean
 	make all
 
 grind: ${NAME}
-	valgrind -s --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all ./btc filename
+	valgrind -s --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all ./RPN 
 
 
 .PHONY: all clean fclean re grind 
