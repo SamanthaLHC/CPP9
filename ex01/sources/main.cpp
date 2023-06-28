@@ -20,13 +20,13 @@ int main(int ac, char **av)
 		std::string seq(av[1]);
 		if ((seq.find("*") == std::string::npos) && (seq.find("+") == std::string::npos) && (seq.find("-") == std::string::npos) && (seq.find("/") == std::string::npos))
 		{
-			PRINT("Error. No operator in this sequence.");
+			ERROR("Error. No operator in this sequence.");
 			return 1;
 		}
 		size_t last_pos = seq.size() - 1;
 		if (!isoperator(seq[last_pos]))
 		{
-			PRINT("Error. Not a RPN sequence (no operator at the end).");
+			ERROR("Error. Not a RPN sequence (no operator at the end).");
 			return 1;
 		}
 

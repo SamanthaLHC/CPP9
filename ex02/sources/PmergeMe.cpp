@@ -143,7 +143,6 @@ void PmergeMe::insert_sort(std::vector<int> &vector_arr, int start, int end)
 		}
 		vector_arr[j] = tmp;
 	}
-	// std::vector<int> tmp_vec(vector_arr.begin() + start, vector_arr.begin() + end - 1);
 }
 
 void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int end)
@@ -214,7 +213,6 @@ void PmergeMe::insert_sort(std::deque<int> &deque_arr, int start, int end)
 		}
 		deque_arr[j] = tmp;
 	}
-	// std::deque<int> tmp_deq(deque_arr.begin() + start, deque_arr.begin() + end - 1);
 }
 
 void PmergeMe::merge_sort(std::deque<int> &deque_arr, int start, int mid, int end)

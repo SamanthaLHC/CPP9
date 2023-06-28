@@ -86,23 +86,34 @@ void RevPolishNot::process_sequence(std::string const &seq)
 		pos = seq.find(' ', i);
 		std::string token = seq.substr(i, (pos - i));
 
+		if (token.empty() == true)
+		{
+			i++;
+			continue;
+		}
+
 		if (token.size() == 1)
 		{
 			if (isoperator(token[0]))
 			{
 				_operator = token[0];
-				if (_sequence.size() > 0)
+				if (_sequence.size() >= 2)
 				{
 					_term_b = _sequence.top();
 					_sequence.pop();
 					_term_a = _sequence.top();
 					_sequence.pop();
+					if (_operator == '/' && _term_b == 0)
+					{
+						ERROR("Error. Divide by zero impossible.");
+						return;
+					}
 					do_calcul();
 					_sequence.push(_result);
 				}
 				else
 				{
-					PRINT("Error. First elem is an operator.");
+					ERROR("Error. First elem is an operator.");
 					return;
 				}
 			}
@@ -117,11 +128,22 @@ void RevPolishNot::process_sequence(std::string const &seq)
 		}
 		else
 		{
-			// not ad digit nor operator
-			PRINT("Error. Not an integer < 10 nor an operator.");
+			// not a digit nor operator
+			ERROR("Error. Not an integer < 10 nor an operator.");
 			return;
 		}
 		i = pos + 1;
 	}
-	PRINT(_sequence.top());
+	if (_sequence.size() == 1)
+		PRINT(_sequence.top());
+	else
+	{
+		ERROR("Error. Operator missing cannot fully calculate the sequence");
+		INFO("Elements in stack are: ", "");
+		for (size_t i = 0; i <= _sequence.size(); i++)
+		{
+			INFO("", _sequence.top());
+			_sequence.pop();
+		}
+	}
 }
