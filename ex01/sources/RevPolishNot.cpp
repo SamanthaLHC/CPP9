@@ -113,7 +113,7 @@ void RevPolishNot::process_sequence(std::string const &seq)
 				}
 				else
 				{
-					ERROR("Error. First elem is an operator.");
+					ERROR("Error. Missing operand cannot fully calculate the sequence.");
 					return;
 				}
 			}
