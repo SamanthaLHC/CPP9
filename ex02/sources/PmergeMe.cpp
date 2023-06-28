@@ -143,7 +143,7 @@ void PmergeMe::insert_sort(std::vector<int> &vector_arr, int start, int end)
 		}
 		vector_arr[j] = tmp;
 	}
-	std::vector<int> tmp_vec(vector_arr.begin() + start, vector_arr.begin() + end - 1);
+	// std::vector<int> tmp_vec(vector_arr.begin() + start, vector_arr.begin() + end - 1);
 }
 
 void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int end)
@@ -181,6 +181,9 @@ void PmergeMe::merge_sort(std::vector<int> &vector_arr, int start, int mid, int 
 
 void PmergeMe::merge_insert_sort(std::vector<int> &vector_arr, int start, int end)
 {
+	if (vector_arr.size() == 1)
+		return;
+
 	int size = vector_arr.size() / 2;
 	if (end - start > size)
 	{
@@ -195,8 +198,6 @@ void PmergeMe::merge_insert_sort(std::vector<int> &vector_arr, int start, int en
 	clock_t end_time = clock();
 	_vec_time = (end_time - _begin_vec) * 1000000 / CLOCKS_PER_SEC;
 }
-
-
 
 // sort__________deque
 
@@ -213,7 +214,7 @@ void PmergeMe::insert_sort(std::deque<int> &deque_arr, int start, int end)
 		}
 		deque_arr[j] = tmp;
 	}
-	std::deque<int> tmp_deq(deque_arr.begin() + start, deque_arr.begin() + end - 1);
+	// std::deque<int> tmp_deq(deque_arr.begin() + start, deque_arr.begin() + end - 1);
 }
 
 void PmergeMe::merge_sort(std::deque<int> &deque_arr, int start, int mid, int end)
@@ -251,6 +252,9 @@ void PmergeMe::merge_sort(std::deque<int> &deque_arr, int start, int mid, int en
 
 void PmergeMe::merge_insert_sort(std::deque<int> &deque_arr, int start, int end)
 {
+	if (deque_arr.size() == 1)
+		return;
+
 	int size = deque_arr.size() / 2;
 	if (end - start > size)
 	{

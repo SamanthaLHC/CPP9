@@ -16,7 +16,7 @@ public:
 	// measure time
 	void set_time_begin_vec(clock_t time);
 	clock_t get_time_begin_vec();
-	double get_vec_time();
+	double get_vec_time(); 
 
 	void set_time_begin_deq(clock_t time);
 	clock_t get_time_begin_deq();
